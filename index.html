@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Document</title>
+     <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#000000]">
+     <!-- Main Start Screen -->
+     <div id="mainScreen" class="w-screen h-screen items-end overflow-hidden">
+          <h1 class = "w-[75%] h-[60%] mx-[12.5%] text-[#00ff00] text-9xl text-center">GAME NAME / LOGO</h1>
+          <button id="ChooseCharStart" 
+          class="rounded-lg w-[10%] h-[5%] mx-[45%] border-[#0f0] bg-[#0f0] border-[2px] hover:border-[#020] hover:bg-[#080]">START</button>
+     </div>
+
+     <!-- Chose Character Screen -->
+     <div id="charScreen" class="w-screen h-screen items-center text-white">
+          <h3 class="h-10% w-full text-center text-2xl">Chose your Character</h3>
+          <div class="w-full items-center text-center h-[90%] px-[25%] grid grid-cols-2 grid-rows-2">
+               <container class="col-span-1 row-span-1 text-left">
+                    <p>Wizard <br> description <br>Inventory includes:<br>basic wand, basic leather <br></p>
+                    <button id="StartGameWiz"
+                    class="rounded-lg border-[#0f0] p-1 bg-[#0f0] border-[2px] hover:border-[#020] hover:bg-[#080]">Wizard</button>
+               </container>
+               <container class="col-span-1 row-span-1 text-right">
+                    <p>Barbarian <br> description <br>Inventory includes:<br>basic club, basic plate <br></p>
+                    <button id="StartGameBar"
+                    class="rounded-lg border-[#0f0] p-1 bg-[#0f0] border-[2px] hover:border-[#020] hover:bg-[#080]">Barbarian</button>
+               </container>
+               <container class="col-span-1 row-span-1 text-left">
+                    <p>Cleric <br> description <br>Inventory includes:<br>basic axe, basic chain <br></p>
+                    <button id="StartGameCle"
+                    class="rounded-lg border-[#0f0] p-1 bg-[#0f0] border-[2px] hover:border-[#020] hover:bg-[#080]">Cleric</button>
+               </container>
+               <container class="col-span-1 row-span-1 text-right">
+                    <p>Rogue <br> description <br>Inventory includes:<br>basic dagger, basic leather <br></p>
+                    <button id="StartGameRogue"
+                    class="rounded-lg border-[#0f0] p-1 bg-[#0f0] border-[2px] hover:border-[#020] hover:bg-[#080]">Rogue</button>
+               </container>
+          </div>
+     </div>
+
+     <!-- Game Screen -->
+     <div id="gameScreen" class="w-[100vw] h-[100vh] overflow-hidden">
+          <container class="w-[90%] h-[90%] mx-[5%] my-[2.5%] grid grid-rows-10 grid-cols-10 gap-4">
+               <div class="col-span-10 row-span-6 rounded-lg bg-[#2c2c2c] p-2 text-white flex gap-4">
+                    <div class="h-full w-[50%] rounded-lg" id="TextOutput">
+
+                    </div>
+                    <div class="h-full w-[50%] rounded-lg bg-[#000]" id="ImgOfRoom">
+
+                    </div>
+               </div>
+               <div class="col-span-4 row-span-2 rounded-lg bg-[#2c2c2c] p-2 text-white">
+                    <u>List Of Commands:</u><br>
+                    <b class="text-[#0f0]">north east south west</b>: move in given direction.<br>
+                    <b class="text-[#0f0]">attack</b>: try hit monster <b>YOU CAN MISS</b>.<br>
+                    <b class="text-[#0f0]">look</b>: look around room you are in.<br>
+                    <b class="text-[#0f0]">collect</b>: collect items you have seen.<br>
+                    <b class="text-[#0f0]">exit</b>: leave the dungeon.<br>
+                    <b class="text-[#0f0]">enter</b> enter the dungeon.<br>
+                    <b class="text-[#0f0]">buy ItemName</b>: buy the item you specify.<br>
+                    <b class="text-[#0f0]">sell ItemName</b>: sell the item you specify.
+               </div>
+               <div class="col-span-6 row-span-2 rounded-lg bg-[#2c2c2c] p-2 text-white" id="showInventory"><u>INVENTORY:</u></div>
+               <input type="text" class="col-span-10 row-span-1 rounded-lg bg-[#2c2c2c] p-2 text-[#0f0]" id="CommandsInput">
+          </container>
+     </div>
+</body>
+
+<script src="Game.js"></script>
+</html>
