@@ -54,7 +54,7 @@ class Room {
                return this._linkedRooms[direction];
           } 
           else {
-               alert("You can't go that way",);
+               setImg("img/NotThatWay.png");
                return this;
           }
      }
@@ -166,7 +166,7 @@ class Enemy extends Entety{
           currentPlayer.levelUp();
           currentRoom._enemiesInRoom = [];
           changeRoomInfo()
-          alert("Enemy Dead")
+          setImg("img/EnemyDead.png")
      }
 
      takeDamage(damageToTake){
@@ -212,7 +212,7 @@ class Player extends Entety{
           gameOver()
      }
      takeDamage(damageToTake){
-          alert("You have been hit")
+          setImg("img/TakeDamge.png")
           this._hitPoints -= damageToTake
           if (this._hitPoints < 1)
           {
@@ -227,7 +227,7 @@ class Player extends Entety{
           let hitVal = Math.floor(Math.random()*20)
           if(hitVal > enemy._armourClass-1)
           {
-               alert("You hit an enemy")
+               setImg("img/HitEnemy.png")
                let damageGiven = this._equipt.WeaponEquipt._damage
                if(this._equipt.WeaponEquipt.damgeType == "magic")
                {
@@ -248,7 +248,7 @@ class Player extends Entety{
                }
                enemy.takeDamage(damageGiven)
           }
-          else alert("miss")
+          else return setImg("img/MissEnemy.png")
 
      }
 
@@ -267,12 +267,13 @@ class Player extends Entety{
                this._level_exp = 0;
                this.setmaxHitPoints()
                this._hitPoints = this._maxHitPoints
-               document.getElementById("HitPoints").innerText = "HitPoints: " + currentPlayer._hitPoints + "/" + currentPlayer._maxHitPoints;
                if(level == 5){
                     gameWin()
                     return
                }
-               alert("LEVEL UP")
+               setUpScreen()
+               setImg("img/LevelUp.png");
+               
           }
      }
 
@@ -286,17 +287,20 @@ class Player extends Entety{
                          if(this._hitPoints > this._maxHitPoints){
                               this._hitPoints = this._maxHitPoints
                          }
+                         setImg("img/PotionDrank.png")
                     }
-                    else alert("You are at full health.")
+                    else return setImg("img/FullHP.png")
                }
-               else alert("Out Of healing potions")
+               else return setImg("img/EmptyPotion.png")
           }    
           else if(potion == "mana"){
                if(this._inventory._Potions[3].total > 0){
                     this._mana += 3
                     this._inventory._Potions[3].total -= 1
+                    setImg("img/PotionDrank.png")
                }
-               else alert("Out of mana potions")
+               else return setImg("img/EmptyPotion.png")
+               
           }
           setUpScreen()
           
@@ -310,9 +314,11 @@ class Player extends Entety{
 
           for(let i = 0; i < (pathP).length; i+=2){
                if(pathP[i]._ItemName == item._ItemName){
-                    pathP[i+1].total += 1
-                    currentRoom._itemsInRoom = []
+                    pathP[i+1].total += 1;
+                    currentRoom._itemsInRoom = [];
                     setUpScreen()
+                    changeRoomInfo()
+                    setImg("img/NewPotion.png")
                     return
                }
           }
@@ -321,6 +327,8 @@ class Player extends Entety{
                     pathA[i+1].total += 1 
                     currentRoom._itemsInRoom = []
                     setUpScreen()
+                    changeRoomInfo()
+                    setImg("img/NewArmour.png")
                     return
                }
           }
@@ -329,28 +337,36 @@ class Player extends Entety{
                     pathW[i+1].total += 1
                     currentRoom._itemsInRoom = []
                     setUpScreen()
+                    changeRoomInfo()
+                    setImg("img/NewWeapon.png")
                     return
                }
           }
-          if (item._type = "Potion"){
+          if (item._type == "Potion"){
                pathP.push(item)
                pathP.push({total : 1})
                currentRoom._itemsInRoom = []
                setUpScreen()
+               changeRoomInfo()
+               setImg("img/NewPotion.png")
                return
           }
-          if (item._type = "Armour"){
+          if (item._type == "Armour"){
                pathA.push(item)
                pathA.push({total : 1})
                currentRoom._itemsInRoom = []
                setUpScreen()
+               changeRoomInfo()
+               setImg("img/NewArmour.png")
                return
           }
-          if (item._type = "Weapon"){
+          if (item._type == "Weapon"){
                pathW.push(item) 
                pathW.push({total : 1})
                currentRoom._itemsInRoom = []
                setUpScreen()
+               changeRoomInfo()
+               setImg("img/NewWeapon.png")
                return
           }
           
@@ -465,7 +481,7 @@ const armourShop = new shop("armourShop", Adventurer, "armour", basicArmourList,
 armourShop._Img = ""
 //dungeon
 const dungeonEntrance = new DungeonEntrance("dungeonEntrance", "A vast chasm of rock opens up before you. Vines and moss line each wall, inviting only the bravest to enter.")
-dungeonEntrance._Img = ""
+dungeonEntrance._Img = "img/CaveEntrance.png"
 const dungeonExit = new DungeonEntrance("dungeonExit", "The light from the entrance still floods the cavern.")
 dungeonExit._Img = ""
 //dungeon rooms are created in create dungeon called on entry to dungeon
@@ -599,6 +615,7 @@ function showGame(){
 
 function gameStart(){
      currentRoom = TownCenter
+     currentPlayer._dead = false;
      document.getElementById("TextOutput").innerText = "Your goal is to go to the cave south of the town kill monsters and level up to level 5 collect items and gold along the way." + "\n" + currentRoom._name + "\n"+ currentRoom._description + "\n" + currentRoom._linkedRooms
      setUpScreen()
 
@@ -651,7 +668,7 @@ function gameStart(){
                                    currentPlayer.rollToHit(currentRoom._enemiesInRoom[i])
                               }
                          }
-                         else alert("No enemy to attack")
+                         else return setImg("img/NoEnemy.png")
                          document.getElementById("CommandsInput").value = ""
                     }
                     else if(heal.includes(command.toLowerCase())){
@@ -1208,6 +1225,9 @@ function setItems(path){
      return (List.join(", "))
 }
 
+function setImg(imagepath){
+     document.getElementById("ImgOfRoom").src = imagepath
+}
 function changeRoomInfo(){
      if(currentRoom._name == "Room 1" || currentRoom._name == "Room 2" || currentRoom._name == "Room 3" || currentRoom._name == "Room 4" || currentRoom._name == "Room 5" || currentRoom._name == "Room 6" || currentRoom._name == "Room 7" || currentRoom._name == "Room 8" || currentRoom._name == "Secret room"){
           document.getElementById("TextOutput").innerText = currentRoom._name + "\n" + currentRoom._description + "\nEnemy: " + showEnemy()+ "\nItem: " + showItems() + "\nopenings: " + showdirections()
