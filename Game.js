@@ -265,7 +265,6 @@ class Player extends Entety{
           if (this._level_exp >= 100*this.level)
           {
                this.level ++
-               this._level_exp = 0;
                this.setmaxHitPoints()
                this._hitPoints = this._maxHitPoints
                if(this.level > 4){
