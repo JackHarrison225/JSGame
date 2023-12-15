@@ -311,42 +311,45 @@ class Player extends Entety{
           for(let i = 0; i < (pathP).length; i+=2){
                if(pathP[i]._ItemName == item._ItemName){
                     pathP[i+1].total += 1
-                    setUpScreen()
                     currentRoom._itemsInRoom = []
+                    setUpScreen()
                     return
                }
           }
           for(let i = 0; i < (pathA).length; i+=2){
                if(pathA[i]._ItemName == item._ItemName){
-                    pathA[i+1].total += 1
-                    setUpScreen()
+                    pathA[i+1].total += 1 
                     currentRoom._itemsInRoom = []
+                    setUpScreen()
                     return
                }
           }
           for(let i = 0; i < (pathW).length; i+=2){
                if(pathW[i]._ItemName == item._ItemName){
                     pathW[i+1].total += 1
-                    setUpScreen()
                     currentRoom._itemsInRoom = []
+                    setUpScreen()
                     return
                }
           }
           if (item._type = "Potion"){
                pathP.push(item)
                pathP.push({total : 1})
+               currentRoom._itemsInRoom = []
                setUpScreen()
                return
           }
           if (item._type = "Armour"){
                pathA.push(item)
                pathA.push({total : 1})
+               currentRoom._itemsInRoom = []
                setUpScreen()
                return
           }
           if (item._type = "Weapon"){
                pathW.push(item) 
                pathW.push({total : 1})
+               currentRoom._itemsInRoom = []
                setUpScreen()
                return
           }
@@ -720,7 +723,7 @@ function buildDungeon(){
      populateEnemies(SecretRoom, Goblin = new Enemy("goblin",(6*currentPlayer.level), 3))
      populateItems(SecretRoom)
 
-     
+     //cave layout
      let layout = Math.floor(Math.random()*6)
      console.log("Layout: " + layout)
      switch(layout){
@@ -971,21 +974,26 @@ function buildDungeon(){
                break;
           }
 
+     //spawn Enemies
      function populateEnemies(room, enemy){
-          enemies = Math.floor(Math.random())
+          enemies = Math.floor(Math.random()*2)
           
           if(enemies == 0){
                room._enemiesInRoom.push(enemy)
                room._combat = true
           }
      }
+
+     //spawn items
      function populateItems(room){
           ItemsTF = Math.floor(Math.random()*3)
           
           if(ItemsTF == 1){
+               //choose item
                x = Math.floor(Math.random()*2)
+               //potion
                if(x == 0){
-                    //potion
+                    
                     givenItem = Math.floor(Math.random()*11)
                     if(givenItem == 0 || givenItem == 1 || givenItem == 2){
                          givenItem = healingPot
@@ -1005,9 +1013,169 @@ function buildDungeon(){
                     else if(givenItem == 11){
                          givenItem = manaPotPlus2
                     }
-                    room._itemsInRoom.push(givenItem)
+                    
                }
-               
+               //weapon
+               if(x == 1){
+                    givenItem = Math.floor(Math.random()*11)
+                    //basic
+                    if(givenItem == 0 || givenItem == 1 || givenItem == 2 || givenItem == 3){
+                         choice = Math.floor(Math.random()*3)
+                         switch (choice){
+                              case 0:
+                                   givenItem = BasicAxe
+                                   break;
+                              case 1:
+                                   givenItem = BasicClub
+                                   break;
+                              case 2:
+                                   givenItem = BasicDagger
+                                   break;
+                              case 3:
+                                   givenItem = BasicWand
+                                   break;
+                         }
+                    }
+                    if(givenItem == 4 || givenItem == 5 || givenItem == 6){
+                         choice = Math.floor(Math.random()*3)
+                         switch (choice){
+                              case 0:
+                                   givenItem = BasicAxePlus1
+                                   break;
+                              case 1:
+                                   givenItem = BasicClubPlus1
+                                   break;
+                              case 2:
+                                   givenItem = BasicDaggerPlus1
+                                   break;
+                              case 3:
+                                   givenItem = BasicWandPlus1
+                                   break;
+                         }
+                    }
+                    //normal
+                    if(givenItem == 7 || givenItem == 8){
+                         choice = Math.floor(Math.random()*3)
+                         switch (choice){
+                              case 0:
+                                   givenItem = NormalAxe
+                                   break;
+                              case 1:
+                                   givenItem = NormalClub
+                                   break;
+                              case 2:
+                                   givenItem = NormalDagger
+                                   break;
+                              case 3:
+                                   givenItem = NormalWand
+                                   break;
+                         }
+                    }
+                    if(givenItem == 9){
+                         choice = Math.floor(Math.random()*3)
+                         switch (choice){
+                              case 0:
+                                   givenItem = NormalAxePlus1
+                                   break;
+                              case 1:
+                                   givenItem = NormalClubPlus1
+                                   break;
+                              case 2:
+                                   givenItem = NormalDaggerPlus1
+                                   break;
+                              case 3:
+                                   givenItem = NormalWandPlus1
+                                   break;
+                         }
+                    }
+                    //advanced
+                    if(givenItem == 10){
+                         choice = Math.floor(Math.random()*3)
+                         switch (choice){
+                              case 0:
+                                   givenItem = AdvancedAxe
+                                   break;
+                              case 1:
+                                   givenItem = AdvancedClub
+                                   break;
+                              case 2:
+                                   givenItem = AdvancedDagger
+                                   break;
+                              case 3:
+                                   givenItem = AdvancedWand
+                                   break;
+                         }
+                    }
+                    if(givenItem == 11){
+                         choice = Math.floor(Math.random()*3)
+                         switch (choice){
+                              case 0:
+                                   givenItem = AdvancedAxePlus1
+                                   break;
+                              case 1:
+                                   givenItem = AdvancedClubPlus1
+                                   break;
+                              case 2:
+                                   givenItem = AdvancedDaggerPlus1
+                                   break;
+                              case 3:
+                                   givenItem = AdvancedWandPlus1
+                                   break;
+                         }
+                    }
+                    
+               }
+               //armour
+               if(x == 2){
+                    givenItem = Math.floor(Math.random()*11)
+                    //basic
+                    if(givenItem == 0 || givenItem == 1 || givenItem == 2 || givenItem == 3){
+                         choice = Math.floor(Math.random()*2)
+                         switch (choice){
+                              case 0:
+                                   givenItem = BasicPlate
+                                   break;
+                              case 1:
+                                   givenItem = BasicChain
+                                   break;
+                              case 2:
+                                   givenItem = BasicLeather
+                                   break;
+
+                         }
+                    }
+                    //normal
+                    if(givenItem == 7 || givenItem == 8){
+                         choice = Math.floor(Math.random()*2)
+                         switch (choice){
+                              case 0:
+                                   givenItem = NormalPlate
+                                   break;
+                              case 1:
+                                   givenItem = NormalChain
+                                   break;
+                              case 2:
+                                   givenItem = NormalLeather
+                                   break;;
+                         }
+                    }
+                    //advanced
+                    if(givenItem == 10){
+                         choice = Math.floor(Math.random()*2)
+                         switch (choice){
+                              case 0:
+                                   givenItem = AdvancedPlate
+                                   break;
+                              case 1:
+                                   givenItem = AdvancedChain
+                                   break;
+                              case 2:
+                                   givenItem = AdvancedLeather
+                                   break;
+                         }
+                    }     
+               }
+               room._itemsInRoom.push(givenItem)
           }
      }
 }
