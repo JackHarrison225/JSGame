@@ -268,6 +268,10 @@ class Player extends Entety{
                this.setmaxHitPoints()
                this._hitPoints = this._maxHitPoints
                document.getElementById("HitPoints").innerText = "HitPoints: " + currentPlayer._hitPoints + "/" + currentPlayer._maxHitPoints;
+               if(level == 5){
+                    gameWin()
+                    return
+               }
                alert("LEVEL UP")
           }
      }
@@ -327,6 +331,24 @@ class Player extends Entety{
                     currentRoom._itemsInRoom = []
                     return
                }
+          }
+          if (item._type = "Potion"){
+               pathP.push(item)
+               pathP.push({total : 1})
+               setUpScreen()
+               return
+          }
+          if (item._type = "Armour"){
+               pathA.push(item)
+               pathA.push({total : 1})
+               setUpScreen()
+               return
+          }
+          if (item._type = "Weapon"){
+               pathW.push(item) 
+               pathW.push({total : 1})
+               setUpScreen()
+               return
           }
           
      }
@@ -574,7 +596,7 @@ function showGame(){
 
 function gameStart(){
      currentRoom = TownCenter
-     document.getElementById("TextOutput").innerText = "info for game win stuff and such like" + "\n" + currentRoom._name + "\n"+ currentRoom._description + "\n" + currentRoom._linkedRooms
+     document.getElementById("TextOutput").innerText = "Your goal is to go to the cave south of the town kill monsters and level up to level 5 collect items and gold along the way." + "\n" + currentRoom._name + "\n"+ currentRoom._description + "\n" + currentRoom._linkedRooms
      setUpScreen()
 
      if (currentPlayer._hitPoints > 0){
@@ -998,6 +1020,7 @@ function setUpScreen(){
 
      document.getElementById("ImgOfRoom").src = currentRoom._Img
      document.getElementById("Name").innerText = currentPlayer._EntetyName;
+     document.getElementById("Level").innerText = "Level: " + currentPlayer.level;
      document.getElementById("HitPoints").innerText = "HitPoints: " + currentPlayer._hitPoints + "/" + currentPlayer._maxHitPoints;
      document.getElementById("Mana").innerText = "Mana: " + currentPlayer._mana;
      document.getElementById("Gold").innerText = "Gold: " + currentPlayer._gold;
@@ -1068,4 +1091,13 @@ function gameOver(){
      document.getElementById("charScreen").hidden = true
      document.getElementById("gameScreen").hidden = true
      document.getElementById("gameOverScreen").hidden = false
+     document.getElementById("GameOver").innerText = "Game Over"
+
+}
+function gameWin(){
+     document.getElementById("mainScreen").hidden = true
+     document.getElementById("charScreen").hidden = true
+     document.getElementById("gameScreen").hidden = true
+     document.getElementById("gameOverScreen").hidden = false
+     document.getElementById("GameOver").innerText = "You Win"
 }
