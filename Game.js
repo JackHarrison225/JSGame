@@ -1019,7 +1019,7 @@ function setItems(path){
 
 function changeRoomInfo(){
      if(currentRoom._name == "Room 1" || currentRoom._name == "Room 2" || currentRoom._name == "Room 3" || currentRoom._name == "Room 4" || currentRoom._name == "Room 5" || currentRoom._name == "Room 6" || currentRoom._name == "Room 7" || currentRoom._name == "Room 8" || currentRoom._name == "Secret room"){
-          document.getElementById("TextOutput").innerText = currentRoom._name + "\n" + currentRoom._description + "\nEnemy: " + showEnemy()+ "\nItem" + showItems() + "\nopenings: " + showdirections()
+          document.getElementById("TextOutput").innerText = currentRoom._name + "\n" + currentRoom._description + "\nEnemy: " + showEnemy()+ "\nItem: " + showItems() + "\nopenings: " + showdirections()
      }
      else if(currentRoom._name == "dungeonExit"){
           document.getElementById("TextOutput").innerText = currentRoom._name + "\n" + currentRoom._description + "\nopenings: " + showdirections()
