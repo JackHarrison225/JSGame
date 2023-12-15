@@ -54,7 +54,7 @@ class Room {
                return this._linkedRooms[direction];
           } 
           else {
-               alert("You can't go that way",);
+               setImg("img/NotThatWay.png");
                return this;
           }
      }
@@ -156,6 +156,7 @@ class Enemy extends Entety{
           let hit = (Math.random()*20)
           if(hit > currentPlayer._armourClass-1){
                currentPlayer.takeDamage(this._damage)
+               setImg("img/TakeDamage.png")
           }
      }
 
@@ -166,7 +167,7 @@ class Enemy extends Entety{
           currentPlayer.levelUp();
           currentRoom._enemiesInRoom = [];
           changeRoomInfo()
-          alert("Enemy Dead")
+          setImg("img/EnemyDead.png")
      }
 
      takeDamage(damageToTake){
@@ -212,7 +213,7 @@ class Player extends Entety{
           gameOver()
      }
      takeDamage(damageToTake){
-          alert("You have been hit")
+          setImg("img/TakeDamge.png")
           this._hitPoints -= damageToTake
           if (this._hitPoints < 1)
           {
@@ -227,14 +228,14 @@ class Player extends Entety{
           let hitVal = Math.floor(Math.random()*20)
           if(hitVal > enemy._armourClass-1)
           {
-               alert("You hit an enemy")
+               setImg("img/HitEnemy.png")
                let damageGiven = this._equipt.WeaponEquipt._damage
                if(this._equipt.WeaponEquipt.damgeType == "magic")
                {
                     if(this._mana > 0)
                     {
                          let damage_bonus = this._stats.InteMod
-                         this._mana --
+                         this._mana -= 3
                          damageGiven += damage_bonus
                     }
                }
@@ -248,7 +249,7 @@ class Player extends Entety{
                }
                enemy.takeDamage(damageGiven)
           }
-          else alert("miss")
+          else return setImg("img/MissEnemy.png")
 
      }
 
@@ -267,32 +268,85 @@ class Player extends Entety{
                this._level_exp = 0;
                this.setmaxHitPoints()
                this._hitPoints = this._maxHitPoints
-               document.getElementById("HitPoints").innerText = "HitPoints: " + currentPlayer._hitPoints + "/" + currentPlayer._maxHitPoints;
-               alert("LEVEL UP")
+               if(this.level > 4){
+                    return gameWin()
+               }
+               setUpScreen()
+               setImg("img/LevelUp.png");
+               
           }
      }
 
      takePotion(potion){
           if(potion == "healing"){
-               if(this._inventory._Potions[1].total > 0){
-                    if(this._hitPoints != this._maxHitPoints){     
-                         this._hitPoints += Math.floor((Math.random()*8)+4) 
-                         this._hitPoints += this._stats.WisMod
-                         this._inventory._Potions[1].total -= 1
-                         if(this._hitPoints > this._maxHitPoints){
-                              this._hitPoints = this._maxHitPoints
+               for(let i =0; i < this._inventory._Potions.length; i+=2){
+                    console.log(this._inventory._Potions[i+1].total )
+                    if((this._inventory._Potions[i]._ItemName == "healing Pot") && this._inventory._Potions[i+1].total > 0){
+                         if(this._hitPoints != this._maxHitPoints){     
+                              this._hitPoints += Math.floor((Math.random()*8)+4) 
+                              this._hitPoints += this._stats.WisMod
+                              this._inventory._Potions[i+1].total -= 1
+                              if(this._hitPoints > this._maxHitPoints){
+                                  this._hitPoints = this._maxHitPoints
+                              }
+                              setUpScreen()
+                              return setImg("img/PotionDrank.png")
                          }
+                         
                     }
-                    else alert("You are at full health.")
+                    else if((this._inventory._Potions[i]._ItemName == "healing Pot +1") && this._inventory._Potions[i+1].total > 0){
+                         if(this._hitPoints != this._maxHitPoints){     
+                              this._hitPoints += Math.floor((Math.random()*12)+4) 
+                              this._hitPoints += this._stats.WisMod
+                              this._inventory._Potions[i+1].total -= 1
+                              if(this._hitPoints > this._maxHitPoints){
+                                  this._hitPoints = this._maxHitPoints
+                              }
+                              setUpScreen()
+                              return setImg("img/PotionDrank.png")
+                         }   
+                    }
+                    else if((this._inventory._Potions[i]._ItemName == "healing Pot +2") && this._inventory._Potions[i+1].total > 0){
+                         if(this._hitPoints != this._maxHitPoints){     
+                              this._hitPoints += Math.floor((Math.random()*14)+4) 
+                              this._hitPoints += this._stats.WisMod
+                              this._inventory._Potions[i+1].total -= 1
+                              if(this._hitPoints > this._maxHitPoints){
+                                  this._hitPoints = this._maxHitPoints
+                              }
+                              setUpScreen()
+                              return setImg("img/PotionDrank.png")
+                         }else return setImg("img/FullHP.png")
+                         
+                    }
+                    else return setImg("img/EmptyPotion.png")
                }
-               else alert("Out Of healing potions")
+               
           }    
+          
           else if(potion == "mana"){
-               if(this._inventory._Potions[3].total > 0){
-                    this._mana += 3
-                    this._inventory._Potions[3].total -= 1
-               }
-               else alert("Out of mana potions")
+               for(let i = 0; i < this._inventory._Potions.length; i+=1){
+                    if((this._inventory._Potions[i]._ItemName == "mana Pot") && this._inventory._Potions[i+1].total > 0){
+                         this._mana += 3
+                         this._inventory._Potions[i+1].total -= 1
+                         setUpScreen()
+                         return setImg("img/PotionDrank.png")
+                    }
+                    else if((this._inventory._Potions[i]._ItemName == "mana Pot +1") && this._inventory._Potions[i+1].total > 0){
+                         this._mana += 6
+                         this._inventory._Potions[i+1].total -= 1
+                         setUpScreen()
+                         return setImg("img/PotionDrank.png")
+                    }
+                    else if((this._inventory._Potions[i]._ItemName == "mana Pot +2") && this._inventory._Potions[i+1].total > 0){
+                         this._mana += 9
+                         this._inventory._Potions[i+1].total -= 1
+                         setUpScreen()
+                         return setImg("img/PotionDrank.png")
+                    }
+                    
+               }return setImg("img/EmptyPotion.png")
+               
           }
           setUpScreen()
           
@@ -306,27 +360,60 @@ class Player extends Entety{
 
           for(let i = 0; i < (pathP).length; i+=2){
                if(pathP[i]._ItemName == item._ItemName){
-                    pathP[i+1].total += 1
+                    pathP[i+1].total += 1;
+                    currentRoom._itemsInRoom = [];
                     setUpScreen()
-                    currentRoom._itemsInRoom = []
+                    changeRoomInfo()
+                    setImg("img/NewPotion.png")
                     return
                }
           }
           for(let i = 0; i < (pathA).length; i+=2){
                if(pathA[i]._ItemName == item._ItemName){
-                    pathA[i+1].total += 1
-                    setUpScreen()
+                    pathA[i+1].total += 1 
                     currentRoom._itemsInRoom = []
+                    setUpScreen()
+                    changeRoomInfo()
+                    setImg("img/NewArmour.png")
                     return
                }
           }
           for(let i = 0; i < (pathW).length; i+=2){
                if(pathW[i]._ItemName == item._ItemName){
                     pathW[i+1].total += 1
-                    setUpScreen()
                     currentRoom._itemsInRoom = []
+                    setUpScreen()
+                    changeRoomInfo()
+                    setImg("img/NewWeapon.png")
                     return
                }
+          }
+          if (item._type == "Potion"){
+               pathP.push(item)
+               pathP.push({total : 1})
+               currentRoom._itemsInRoom = []
+               setUpScreen()
+               changeRoomInfo()
+               setImg("img/NewPotion.png")
+               return
+          }
+          if (item._type == "Armour"){
+               pathA.push(item)
+               pathA.push({total : 1})
+               currentRoom._itemsInRoom = []
+               setUpScreen()
+               changeRoomInfo()
+               setImg("img/NewArmour.png")
+               return
+          }
+          if (item._type == "Weapon"){
+               pathW.push(item) 
+               pathW.push({total : 1})
+               currentRoom._itemsInRoom = []
+               setUpScreen()
+               changeRoomInfo()
+               setImg("img/NewWeapon.png")
+               return
           }
           
      }
@@ -429,8 +516,8 @@ advancedWeaponList = [AdvancedWand, AdvancedClub, AdvancedAxe, AdvancedDagger, A
 advancedArmourList = [AdvancedLeather, AdvancedChain, AdvancedPlate]
 
 //town
-const TownCenter = new Town("TownCenter" ,"Large Medieval style shops line the cobbled streets and men, women and children going about their business")
-TownCenter._Img = "img/TownCenter.png"
+const Tore = new Town("Tore" ,"Large Medieval style shops line the cobbled streets and men, women and children going about their business")
+Tore._Img = "img/TownCenter.png"
 //shops
 const potionShop = new shop("potionShop", Alchemist, "potions", potionList, "black wooden shelves line the walls each teaming with clear glass bottles filled with red and blue liquid.")
 potionShop._Img = ""
@@ -440,21 +527,21 @@ const armourShop = new shop("armourShop", Adventurer, "armour", basicArmourList,
 armourShop._Img = ""
 //dungeon
 const dungeonEntrance = new DungeonEntrance("dungeonEntrance", "A vast chasm of rock opens up before you. Vines and moss line each wall, inviting only the bravest to enter.")
-dungeonEntrance._Img = ""
+dungeonEntrance._Img = "img/CaveEntrance.png"
 const dungeonExit = new DungeonEntrance("dungeonExit", "The light from the entrance still floods the cavern.")
-dungeonExit._Img = ""
+dungeonExit._Img =" img/CaveExit.png"
 //dungeon rooms are created in create dungeon called on entry to dungeon
 //link rooms
-potionShop.linkRoom("west", TownCenter)
-weaponShop.linkRoom("south", TownCenter)
-armourShop.linkRoom("east", TownCenter)
+potionShop.linkRoom("west", Tore)
+weaponShop.linkRoom("south", Tore)
+armourShop.linkRoom("east", Tore)
 
-TownCenter.linkRoom("east", potionShop)
-TownCenter.linkRoom("north", weaponShop)
-TownCenter.linkRoom("west", armourShop)
-TownCenter.linkRoom("south", dungeonEntrance)
+Tore.linkRoom("east", potionShop)
+Tore.linkRoom("north", weaponShop)
+Tore.linkRoom("west", armourShop)
+Tore.linkRoom("south", dungeonEntrance)
 
-dungeonEntrance.linkRoom("north", TownCenter)
+dungeonEntrance.linkRoom("north", Tore)
 
 
 //functions for running and setting up game
@@ -573,8 +660,9 @@ function showGame(){
 }
 
 function gameStart(){
-     currentRoom = TownCenter
-     document.getElementById("TextOutput").innerText = "info for game win stuff and such like" + "\n" + currentRoom._name + "\n"+ currentRoom._description + "\n" + currentRoom._linkedRooms
+     currentRoom = Tore
+     currentPlayer._dead = false;
+     document.getElementById("TextOutput").innerText = "Your goal is to go to the cave south of the town kill monsters and level up to level 5 collect items and gold along the way." + "\n" + currentRoom._name + "\n"+ currentRoom._description + "\nDirection: " + showdirectionsArea()
      setUpScreen()
 
      if (currentPlayer._hitPoints > 0){
@@ -621,13 +709,14 @@ function gameStart(){
                     }
                     
                     else if(attackEnemny.includes(command.toLowerCase())){
+                         document.getElementById("CommandsInput").value = ""
                          if(currentRoom._enemiesInRoom.length > 0){
                               for(i in currentRoom._enemiesInRoom){
+                                   
                                    currentPlayer.rollToHit(currentRoom._enemiesInRoom[i])
                               }
                          }
-                         else alert("No enemy to attack")
-                         document.getElementById("CommandsInput").value = ""
+                         else return setImg("img/NoEnemy.png")
                     }
                     else if(heal.includes(command.toLowerCase())){
                          currentPlayer.takePotion("healing")
@@ -698,7 +787,7 @@ function buildDungeon(){
      populateEnemies(SecretRoom, Goblin = new Enemy("goblin",(6*currentPlayer.level), 3))
      populateItems(SecretRoom)
 
-     
+     //cave layout
      let layout = Math.floor(Math.random()*6)
      console.log("Layout: " + layout)
      switch(layout){
@@ -949,21 +1038,26 @@ function buildDungeon(){
                break;
           }
 
+     //spawn Enemies
      function populateEnemies(room, enemy){
-          enemies = Math.floor(Math.random())
+          enemies = Math.floor(Math.random()*2)
           
           if(enemies == 0){
                room._enemiesInRoom.push(enemy)
                room._combat = true
           }
      }
+
+     //spawn items
      function populateItems(room){
           ItemsTF = Math.floor(Math.random()*3)
           
           if(ItemsTF == 1){
+               //choose item
                x = Math.floor(Math.random()*2)
+               //potion
                if(x == 0){
-                    //potion
+                    
                     givenItem = Math.floor(Math.random()*11)
                     if(givenItem == 0 || givenItem == 1 || givenItem == 2){
                          givenItem = healingPot
@@ -983,9 +1077,169 @@ function buildDungeon(){
                     else if(givenItem == 11){
                          givenItem = manaPotPlus2
                     }
-                    room._itemsInRoom.push(givenItem)
+                    
                }
-               
+               //weapon
+               if(x == 1){
+                    givenItem = Math.floor(Math.random()*11)
+                    //basic
+                    if(givenItem == 0 || givenItem == 1 || givenItem == 2 || givenItem == 3){
+                         choice = Math.floor(Math.random()*3)
+                         switch (choice){
+                              case 0:
+                                   givenItem = BasicAxe
+                                   break;
+                              case 1:
+                                   givenItem = BasicClub
+                                   break;
+                              case 2:
+                                   givenItem = BasicDagger
+                                   break;
+                              case 3:
+                                   givenItem = BasicWand
+                                   break;
+                         }
+                    }
+                    if(givenItem == 4 || givenItem == 5 || givenItem == 6){
+                         choice = Math.floor(Math.random()*3)
+                         switch (choice){
+                              case 0:
+                                   givenItem = BasicAxePlus1
+                                   break;
+                              case 1:
+                                   givenItem = BasicClubPlus1
+                                   break;
+                              case 2:
+                                   givenItem = BasicDaggerPlus1
+                                   break;
+                              case 3:
+                                   givenItem = BasicWandPlus1
+                                   break;
+                         }
+                    }
+                    //normal
+                    if(givenItem == 7 || givenItem == 8){
+                         choice = Math.floor(Math.random()*3)
+                         switch (choice){
+                              case 0:
+                                   givenItem = NormalAxe
+                                   break;
+                              case 1:
+                                   givenItem = NormalClub
+                                   break;
+                              case 2:
+                                   givenItem = NormalDagger
+                                   break;
+                              case 3:
+                                   givenItem = NormalWand
+                                   break;
+                         }
+                    }
+                    if(givenItem == 9){
+                         choice = Math.floor(Math.random()*3)
+                         switch (choice){
+                              case 0:
+                                   givenItem = NormalAxePlus1
+                                   break;
+                              case 1:
+                                   givenItem = NormalClubPlus1
+                                   break;
+                              case 2:
+                                   givenItem = NormalDaggerPlus1
+                                   break;
+                              case 3:
+                                   givenItem = NormalWandPlus1
+                                   break;
+                         }
+                    }
+                    //advanced
+                    if(givenItem == 10){
+                         choice = Math.floor(Math.random()*3)
+                         switch (choice){
+                              case 0:
+                                   givenItem = AdvancedAxe
+                                   break;
+                              case 1:
+                                   givenItem = AdvancedClub
+                                   break;
+                              case 2:
+                                   givenItem = AdvancedDagger
+                                   break;
+                              case 3:
+                                   givenItem = AdvancedWand
+                                   break;
+                         }
+                    }
+                    if(givenItem == 11){
+                         choice = Math.floor(Math.random()*3)
+                         switch (choice){
+                              case 0:
+                                   givenItem = AdvancedAxePlus1
+                                   break;
+                              case 1:
+                                   givenItem = AdvancedClubPlus1
+                                   break;
+                              case 2:
+                                   givenItem = AdvancedDaggerPlus1
+                                   break;
+                              case 3:
+                                   givenItem = AdvancedWandPlus1
+                                   break;
+                         }
+                    }
+                    
+               }
+               //armour
+               if(x == 2){
+                    givenItem = Math.floor(Math.random()*11)
+                    //basic
+                    if(givenItem == 0 || givenItem == 1 || givenItem == 2 || givenItem == 3){
+                         choice = Math.floor(Math.random()*2)
+                         switch (choice){
+                              case 0:
+                                   givenItem = BasicPlate
+                                   break;
+                              case 1:
+                                   givenItem = BasicChain
+                                   break;
+                              case 2:
+                                   givenItem = BasicLeather
+                                   break;
+
+                         }
+                    }
+                    //normal
+                    if(givenItem == 7 || givenItem == 8){
+                         choice = Math.floor(Math.random()*2)
+                         switch (choice){
+                              case 0:
+                                   givenItem = NormalPlate
+                                   break;
+                              case 1:
+                                   givenItem = NormalChain
+                                   break;
+                              case 2:
+                                   givenItem = NormalLeather
+                                   break;;
+                         }
+                    }
+                    //advanced
+                    if(givenItem == 10){
+                         choice = Math.floor(Math.random()*2)
+                         switch (choice){
+                              case 0:
+                                   givenItem = AdvancedPlate
+                                   break;
+                              case 1:
+                                   givenItem = AdvancedChain
+                                   break;
+                              case 2:
+                                   givenItem = AdvancedLeather
+                                   break;
+                         }
+                    }     
+               }
+               room._itemsInRoom.push(givenItem)
           }
      }
 }
@@ -998,6 +1252,7 @@ function setUpScreen(){
 
      document.getElementById("ImgOfRoom").src = currentRoom._Img
      document.getElementById("Name").innerText = currentPlayer._EntetyName;
+     document.getElementById("Level").innerText = "Level: " + currentPlayer.level;
      document.getElementById("HitPoints").innerText = "HitPoints: " + currentPlayer._hitPoints + "/" + currentPlayer._maxHitPoints;
      document.getElementById("Mana").innerText = "Mana: " + currentPlayer._mana;
      document.getElementById("Gold").innerText = "Gold: " + currentPlayer._gold;
@@ -1017,15 +1272,20 @@ function setItems(path){
      return (List.join(", "))
 }
 
+function setImg(imagepath){
+     document.getElementById("ImgOfRoom").src = imagepath
+}
 function changeRoomInfo(){
      if(currentRoom._name == "Room 1" || currentRoom._name == "Room 2" || currentRoom._name == "Room 3" || currentRoom._name == "Room 4" || currentRoom._name == "Room 5" || currentRoom._name == "Room 6" || currentRoom._name == "Room 7" || currentRoom._name == "Room 8" || currentRoom._name == "Secret room"){
-          document.getElementById("TextOutput").innerText = currentRoom._name + "\n" + currentRoom._description + "\nEnemy: " + showEnemy()+ "\nItem: " + showItems() + "\nopenings: " + showdirections()
+          document.getElementById("TextOutput").innerText = currentRoom._name + "\n" + currentRoom._description + "\nEnemy: " + showEnemy()+ "\nItem: " + showItems() + "\nopenings:\n" + showdirections()
+          document.getElementById("ImgOfRoom").src = currentRoom._Img    
      }
      else if(currentRoom._name == "dungeonExit"){
           document.getElementById("TextOutput").innerText = currentRoom._name + "\n" + currentRoom._description + "\nopenings: " + showdirections()
+          document.getElementById("ImgOfRoom").src = currentRoom._Img
      }
      else{
-          document.getElementById("TextOutput").innerText = currentRoom._name + "\n" + currentRoom._description;
+          document.getElementById("TextOutput").innerText = currentRoom._name + "\n" + currentRoom._description + "\ndirection: " + showdirectionsArea()
           document.getElementById("ImgOfRoom").src = currentRoom._Img
      }
 }
@@ -1062,10 +1322,31 @@ function showdirections(){
      return details;
      
 }
+function showdirectionsArea(){
+   
+     const entries = Object.entries(currentRoom._linkedRooms);
+     let details = []
+     for (const [direction, room] of entries) {
+          text =  "\n" + room._name + ": " + direction  ;
+          details.push(text);
+     }
+     details.join(" ")
+     return details;
+     
+}
 
 function gameOver(){
      document.getElementById("mainScreen").hidden = true
      document.getElementById("charScreen").hidden = true
      document.getElementById("gameScreen").hidden = true
      document.getElementById("gameOverScreen").hidden = false
+     document.getElementById("GameOver").innerText = "Game Over"
+
+}
+function gameWin(){
+     document.getElementById("mainScreen").hidden = true
+     document.getElementById("charScreen").hidden = true
+     document.getElementById("gameScreen").hidden = true
+     document.getElementById("gameOverScreen").hidden = false
+     document.getElementById("GameOver").innerText = "You Win"
 }
