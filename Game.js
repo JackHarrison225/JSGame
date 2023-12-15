@@ -54,7 +54,9 @@ class Room {
                return this._linkedRooms[direction];
           } 
           else {
-               setImg("img/NotThatWay.png");
+               setImg("img/NotThatWay.png")
+               setTimeout(() => {}, 3000);
+               
                return this;
           }
      }
@@ -157,6 +159,7 @@ class Enemy extends Entety{
           if(hit > currentPlayer._armourClass-1){
                currentPlayer.takeDamage(this._damage)
                setImg("img/TakeDamage.png")
+               setTimeout(() => {}, 3000);
           }
      }
 
@@ -168,6 +171,7 @@ class Enemy extends Entety{
           currentRoom._enemiesInRoom = [];
           changeRoomInfo()
           setImg("img/EnemyDead.png")
+          setTimeout(() => {}, 3000);
      }
 
      takeDamage(damageToTake){
@@ -214,6 +218,7 @@ class Player extends Entety{
      }
      takeDamage(damageToTake){
           setImg("img/TakeDamge.png")
+          setTimeout(() => {}, 3000);
           this._hitPoints -= damageToTake
           if (this._hitPoints < 1)
           {
@@ -229,6 +234,7 @@ class Player extends Entety{
           if(hitVal > enemy._armourClass-1)
           {
                setImg("img/HitEnemy.png")
+               setTimeout(() => {}, 3000);
                let damageGiven = this._equipt.WeaponEquipt._damage
                if(this._equipt.WeaponEquipt.damgeType == "magic")
                {
@@ -249,7 +255,8 @@ class Player extends Entety{
                }
                enemy.takeDamage(damageGiven)
           }
-          else return setImg("img/MissEnemy.png")
+          else{setImg("img/MissEnemy.png")
+          return  setTimeout(() => {}, 3000);}
 
      }
 
@@ -272,6 +279,7 @@ class Player extends Entety{
                }
                setUpScreen()
                setImg("img/LevelUp.png");
+               setTimeout(() => {;}, 3000)
                
           }
      }
@@ -289,7 +297,8 @@ class Player extends Entety{
                                   this._hitPoints = this._maxHitPoints
                               }
                               setUpScreen()
-                              return setImg("img/PotionDrank.png")
+                              setImg("img/PotionDrank.png")
+                              return  setTimeout(() => {console.log("mana")}, 3000);
                          }
                          
                     }
@@ -302,7 +311,8 @@ class Player extends Entety{
                                   this._hitPoints = this._maxHitPoints
                               }
                               setUpScreen()
-                              return setImg("img/PotionDrank.png")
+                              setImg("img/PotionDrank.png")
+                              return  setTimeout(() => {}, 3000);
                          }   
                     }
                     else if((this._inventory._Potions[i]._ItemName == "healing Pot +2") && this._inventory._Potions[i+1].total > 0){
@@ -314,11 +324,14 @@ class Player extends Entety{
                                   this._hitPoints = this._maxHitPoints
                               }
                               setUpScreen()
-                              return setImg("img/PotionDrank.png")
-                         }else return setImg("img/FullHP.png")
+                              setImg("img/PotionDrank.png")
+                              return setTimeout(() => {console.log("mana")}, 3000);
+                         }else {setTimeout(() => {}, 3000);
+                              return  setImg("img/FullHP.png")}
                          
                     }
-                    else return setImg("img/EmptyPotion.png")
+                    else {setImg("img/EmptyPotion.png")
+                    return  setTimeout(() => {}, 3000);}
                }
                
           }    
@@ -329,22 +342,26 @@ class Player extends Entety{
                          this._mana += 3
                          this._inventory._Potions[i+1].total -= 1
                          setUpScreen()
-                         return setImg("img/PotionDrank.png")
+                         setImg("img/PotionDrank.png")
+                         return  setTimeout(() => {}, 3000);
                     }
                     else if((this._inventory._Potions[i]._ItemName == "mana Pot +1") && this._inventory._Potions[i+1].total > 0){
                          this._mana += 6
                          this._inventory._Potions[i+1].total -= 1
                          setUpScreen()
-                         return setImg("img/PotionDrank.png")
+                         setImg("img/PotionDrank.png")
+                         return  setTimeout(() => {}, 3000);
                     }
                     else if((this._inventory._Potions[i]._ItemName == "mana Pot +2") && this._inventory._Potions[i+1].total > 0){
                          this._mana += 9
                          this._inventory._Potions[i+1].total -= 1
                          setUpScreen()
-                         return setImg("img/PotionDrank.png")
+                         setImg("img/PotionDrank.png")
+                         return  setTimeout(() => {}, 3000);
                     }
                     
-               }return setImg("img/EmptyPotion.png")
+               }setImg("img/EmptyPotion.png") 
+               return setTimeout(() => {}, 3000);
                
           }
           setUpScreen()
@@ -364,6 +381,7 @@ class Player extends Entety{
                     setUpScreen()
                     changeRoomInfo()
                     setImg("img/NewPotion.png")
+                    setTimeout(() => {}, 3000);
                     return
                }
           }
@@ -374,6 +392,7 @@ class Player extends Entety{
                     setUpScreen()
                     changeRoomInfo()
                     setImg("img/NewArmour.png")
+                    setTimeout(() => {}, 3000);
                     return
                }
           }
@@ -384,6 +403,7 @@ class Player extends Entety{
                     setUpScreen()
                     changeRoomInfo()
                     setImg("img/NewWeapon.png")
+                    setTimeout(() => {}, 3000);
                     return
                }
           }
@@ -394,6 +414,7 @@ class Player extends Entety{
                setUpScreen()
                changeRoomInfo()
                setImg("img/NewPotion.png")
+               setTimeout(() => {}, 3000);
                return
           }
           if (item._type == "Armour"){
@@ -403,6 +424,7 @@ class Player extends Entety{
                setUpScreen()
                changeRoomInfo()
                setImg("img/NewArmour.png")
+               setTimeout(() => {}, 3000);
                return
           }
           if (item._type == "Weapon"){
@@ -412,6 +434,7 @@ class Player extends Entety{
                setUpScreen()
                changeRoomInfo()
                setImg("img/NewWeapon.png")
+               setTimeout(() => {}, 3000);
                return
           }
           
@@ -661,7 +684,7 @@ function showGame(){
 function gameStart(){
      currentRoom = Tore
      currentPlayer._dead = false;
-     document.getElementById("TextOutput").innerText = "Your goal is to go to the cave south of the town kill monsters and level up to level 5 collect items and gold along the way." + "\n" + currentRoom._name + "\n"+ currentRoom._description + "\nDirection: " + showdirectionsArea()
+     document.getElementById("TextOutput").innerText = "You are a " + currentPlayer._EntetyName + ". Your home town of " + currentRoom._name + " is a small town. Goblins have taken over the nearby mines cutting off the path for outsiders and merchants. your goal is to kill all the monsters within the mines (Reach level 5). This will alow your town to grow possibly even allowing you to become the mayor of town. " + "\n" + currentRoom._name + "\n"+ currentRoom._description + "\nDirection: " + showdirectionsArea()
      setUpScreen()
 
      if (currentPlayer._hitPoints > 0){
@@ -715,7 +738,8 @@ function gameStart(){
                                    currentPlayer.rollToHit(currentRoom._enemiesInRoom[i])
                               }
                          }
-                         else return setImg("img/NoEnemy.png")
+                         else {setImg("img/NoEnemy.png")
+                         return  setTimeout(() => {}, 3000);}
                     }
                     else if(heal.includes(command.toLowerCase())){
                          currentPlayer.takePotion("healing")
