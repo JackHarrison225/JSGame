@@ -55,7 +55,7 @@ class Room {
           } 
           else {
                setImg("img/NotThatWay.png")
-               setTimeout(() => {setImg(currentRoom._Img)}, 3000);
+               setTimeout(() => {setImg(currentRoom._Img)}, 2000);
                
                return this;
           }
@@ -160,7 +160,7 @@ class Enemy extends Entety{
                if(this._EntetyName == "goblin"){setImg("img/GoblinDealdamage.png")}
                else if(this._EntetyName == "slime"){setImg("img/SlimeDealdamage.png")}
                currentPlayer.takeDamage(this._damage)
-               setTimeout(() => {setImg(currentRoom._Img)}, 3000);
+               setTimeout(() => {setImg(currentRoom._Img)}, 2000);
           }
      }
 
@@ -173,7 +173,7 @@ class Enemy extends Entety{
           changeRoomInfo()
           if(this._EntetyName == "goblin"){setImg("img/GoblinDead.png")}
           else if(this._EntetyName == "slime"){setImg("img/SlimeDead.png")}
-          setTimeout(() => {setImg(currentRoom._Img)}, 3000);
+          setTimeout(() => {setImg(currentRoom._Img)}, 2000);
      }
 
      takeDamage(damageToTake){
@@ -227,7 +227,7 @@ class Player extends Entety{
           }
           document.getElementById("HitPoints").innerText = "HitPoints: " + currentPlayer._hitPoints + "/" + currentPlayer._maxHitPoints;
 
-          setTimeout(() => {setImg(currentRoom._Img)}, 3000);
+          setTimeout(() => {setImg(currentRoom._Img)}, 2000);
      }
      
      rollToHit(enemy){
@@ -259,7 +259,7 @@ class Player extends Entety{
           }
           else{if(currentRoom._enemiesInRoom._EntetyName == "goblin"){setImg("img/MissGoblin.png")}
                else if(currentRoom._enemiesInRoom._EntetyName == "slime"){setImg("img/MissSlime.png")}
-               return  setTimeout(() => {setImg(currentRoom._Img)}, 3000);}
+               return  setTimeout(() => {setImg(currentRoom._Img)}, 2000);}
 
      }
 
@@ -282,7 +282,7 @@ class Player extends Entety{
                }
                setUpScreen()
                setImg("img/LevelUp.png");
-               setTimeout(() => {setImg(currentRoom._Img)}, 3000);
+               setTimeout(() => {setImg(currentRoom._Img)}, 2000);
                
           }
      }
@@ -301,7 +301,7 @@ class Player extends Entety{
                               }
                               setUpScreen()
                               setImg("img/PotionDrank.png")
-                              return  setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
+                              return  setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
                          }
                          
                     }
@@ -315,7 +315,7 @@ class Player extends Entety{
                               }
                               setUpScreen()
                               setImg("img/PotionDrank.png")
-                              return  setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
+                              return  setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
                          }   
                     }
                     else if((this._inventory._Potions[i]._ItemName == "healing Pot +2") && this._inventory._Potions[i+1].total > 0){
@@ -328,13 +328,13 @@ class Player extends Entety{
                               }
                               setUpScreen()
                               setImg("img/PotionDrank.png")
-                              return setTimeout(() => {console.log("mana")}, 3000);
-                         }else {setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
+                              return setTimeout(() => {console.log("mana")}, 2000);
+                         }else {setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
                               return  setImg("img/FullHP.png")}
                          
                     }
                     else {setImg("img/EmptyPotion.png")
-                    return  setTimeout(() => {setImg(currentRoom._Img)}, 3000);;}
+                    return  setTimeout(() => {setImg(currentRoom._Img)}, 2000);;}
                }
                
           }    
@@ -346,25 +346,25 @@ class Player extends Entety{
                          this._inventory._Potions[i+1].total -= 1
                          setUpScreen()
                          setImg("img/PotionDrank.png")
-                         return  setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
+                         return  setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
                     }
                     else if((this._inventory._Potions[i]._ItemName == "mana Pot +1") && this._inventory._Potions[i+1].total > 0){
                          this._mana += 6
                          this._inventory._Potions[i+1].total -= 1
                          setUpScreen()
                          setImg("img/PotionDrank.png")
-                         return  setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
+                         return  setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
                     }
                     else if((this._inventory._Potions[i]._ItemName == "mana Pot +2") && this._inventory._Potions[i+1].total > 0){
                          this._mana += 9
                          this._inventory._Potions[i+1].total -= 1
                          setUpScreen()
                          setImg("img/PotionDrank.png")
-                         return  setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
+                         return  setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
                     }
                     
                }setImg("img/EmptyPotion.png") 
-               return setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
+               return setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
                
           }
           setUpScreen()
@@ -384,7 +384,7 @@ class Player extends Entety{
                     setUpScreen()
                     changeRoomInfo()
                     setImg("img/NewPotion.png")
-                    setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
+                    setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
                     return
                }
           }
@@ -395,7 +395,7 @@ class Player extends Entety{
                     setUpScreen()
                     changeRoomInfo()
                     setImg("img/NewArmour.png")
-                    setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
+                    setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
                     return
                }
           }
@@ -406,7 +406,7 @@ class Player extends Entety{
                     setUpScreen()
                     changeRoomInfo()
                     setImg("img/NewWeapon.png")
-                    setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
+                    setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
                     return
                }
           }
@@ -417,7 +417,7 @@ class Player extends Entety{
                setUpScreen()
                changeRoomInfo()
                setImg("img/NewPotion.png")
-               setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
+               setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
                return
           }
           if (item._type == "Armour"){
@@ -427,7 +427,7 @@ class Player extends Entety{
                setUpScreen()
                changeRoomInfo()
                setImg("img/NewArmour.png")
-               setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
+               setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
                return
           }
           if (item._type == "Weapon"){
@@ -437,7 +437,7 @@ class Player extends Entety{
                setUpScreen()
                changeRoomInfo()
                setImg("img/NewWeapon.png")
-               setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
+               setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
                return
           }
           
@@ -742,7 +742,7 @@ function gameStart(){
                               }
                          }
                          else {setImg("img/NoEnemy.png")
-                         return  setTimeout(() => {setImg(currentRoom._Img)}, 3000);;}
+                         return  setTimeout(() => {setImg(currentRoom._Img)}, 2000);;}
                     }
                     else if(heal.includes(command.toLowerCase())){
                          currentPlayer.takePotion("healing")
