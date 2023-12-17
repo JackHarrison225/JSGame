@@ -191,7 +191,7 @@ class Player extends Entety{
           this._level_exp = 0
           this.level = 1;
           this._deathSaves = 0;
-          this._mana = 100;
+          this._mana = 20 * this.level;
           this._maxWeight = (100+((this._stats.StrMod)*5))
           this._armourClass = this.setArmourClass()
           this._currentWeight = this.setWeight()
@@ -231,6 +231,10 @@ class Player extends Entety{
      
      rollToHit(enemy){
           let hitVal = Math.floor(Math.random()*20)
+          if(this._equipt.WeaponEquipt._damageType == "magic")
+               {if(this._mana - 3 <= 0){this._mana = 0}
+               else{this._mana -= 3}
+               }
           if(hitVal > enemy._armourClass-1)
           {
                if(enemy._EntetyName == "goblin"){setImg("img/GoblinHit.png")}
@@ -238,9 +242,7 @@ class Player extends Entety{
                let damageGiven = this._equipt.WeaponEquipt._damage
                if(this._equipt.WeaponEquipt._damageType == "magic")
                {
-                    if(this._mana - 3 < 0){
-                    this._mana == 0}
-                    else{this._mana -= 3}
+                    
                     if(this._mana > 0)
                     {
                          let damage_bonus = this._stats.InteMod
@@ -257,7 +259,9 @@ class Player extends Entety{
                }
                enemy.takeDamage(damageGiven)
           }
+          
           else{
+               setUpScreen()
                if(enemy._EntetyName == "goblin")
                     {return setImg("img/MissGoblin.png")}
                else if(enemy._EntetyName == "slime")
@@ -348,19 +352,19 @@ class Player extends Entety{
                          this._mana += 3
                          this._inventory._Potions[i+1].total -= 1
                          setUpScreen()
-                         setImg("img/PotionDrank.png");
+                         return setImg("img/PotionDrank.png");
                     }
                     else if((this._inventory._Potions[i]._ItemName == "mana Pot +1") && this._inventory._Potions[i+1].total > 0){
                          this._mana += 6
                          this._inventory._Potions[i+1].total -= 1
                          setUpScreen()
-                         setImg("img/PotionDrank.png");
+                         return setImg("img/PotionDrank.png");
                     }
                     else if((this._inventory._Potions[i]._ItemName == "mana Pot +2") && this._inventory._Potions[i+1].total > 0){
                          this._mana += 9
                          this._inventory._Potions[i+1].total -= 1
                          setUpScreen()
-                         setImg("img/PotionDrank.png");
+                         return setImg("img/PotionDrank.png");
                     }
                     
                }
@@ -496,9 +500,6 @@ const manaPotPlus1 = new Potion("mana Pot +1", 0.75, "medium bottle containing f
 const healingPotPlus2 = new Potion("healing Pot +2", 1, "large bottle containing funky smelling red liquid.", 9)
 const manaPotPlus2 = new Potion("mana Pot +2", 1, "lerge bottle containing funky smelling blue liquid.", 9)
 
-//create Chars and enemies
-// const village = new Town()
-// let room1 = new DungeonRoom()
 
 //create NPC
 Alchemist = new NPC({_Potions : [{healingPot : 3}, {manaPot : 1}],
