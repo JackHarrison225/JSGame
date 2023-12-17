@@ -166,9 +166,11 @@ class Enemy extends Entety{
           currentRoom._combat = false;
           this._dead = true;
           currentPlayer._level_exp += this._exp
+          currentPlayer._gold += 5
           currentPlayer.levelUp();
           currentRoom._enemiesInRoom = [];
           changeRoomInfo()
+          setUpScreen()
           if(this._EntetyName == "goblin"){setImg("img/GoblinDead.png")}
           else if(this._EntetyName == "slime"){setImg("img/SlimeDead.png")}
      }
@@ -234,20 +236,22 @@ class Player extends Entety{
                if(enemy._EntetyName == "goblin"){setImg("img/GoblinHit.png")}
                else if(enemy._EntetyName == "slime"){setImg("img/SlimeHit.png")}
                let damageGiven = this._equipt.WeaponEquipt._damage
-               if(this._equipt.WeaponEquipt.damgeType == "magic")
+               if(this._equipt.WeaponEquipt._damageType == "magic")
                {
+                    if(this._mana - 3 < 0){
+                    this._mana == 0}
+                    else{this._mana -= 3}
                     if(this._mana > 0)
                     {
                          let damage_bonus = this._stats.InteMod
-                         this._mana -= 3
                          damageGiven += damage_bonus
                     }
                }
-               else if(this._equipt.WeaponEquipt.damgeType == "blunt"){
+               else if(this._equipt.WeaponEquipt._damageType == "blunt"){
                     let damage_bonus = this._stats.StrMod
                     damageGiven += damage_bonus
                }
-               else if(this._equipt.WeaponEquipt.damgeType == "finness"){
+               else if(this._equipt.WeaponEquipt._damageType == "finness"){
                     let damage_bonus = this._stats.DexMod
                     damageGiven += damage_bonus
                }
@@ -282,8 +286,6 @@ class Player extends Entety{
                }
                setUpScreen()
                setImg("img/LevelUp.png");
-               
-               
           }
      }
 
@@ -732,8 +734,8 @@ function gameStart(){
                               }
                          }
                          else {setImg("img/NoEnemy.png")}
-                         setTimeout(() => {setImg(currentRoom._Img)}, 2000);
-                         return 
+                         return setTimeout(() => {setImg(currentRoom._Img)}, 2000);
+                         
                     }
                     else if(heal.includes(command.toLowerCase())){
                          currentPlayer.takePotion("healing")
@@ -753,16 +755,19 @@ function gameStart(){
                               currentPlayer.collectItem(currentRoom._itemsInRoom[i])
                          }
                          document.getElementById("CommandsInput").value = ""
-                         return setTimeout(() => {setImg(currentRoom._Img)}, 2000);
+                         setTimeout(() => {setImg(currentRoom._Img)}, 2000);
+                         return 
                     }
                     
                     
                     else{alert("that is not a valid command please try again")}
+
                     if (currentRoom._combat == true){
                          for(i in currentRoom._enemiesInRoom){
                               currentRoom._enemiesInRoom[i].attack()
                          }
-                         return  setTimeout(() => {setImg(currentRoom._Img)}, 2000);
+                         setTimeout(() => {setImg(currentRoom._Img)}, 2000);
+                         return  
                     }
 
                }  
@@ -1066,11 +1071,11 @@ function buildDungeon(){
           if(currentPlayer.level < 3)
           {
                if(enemies == 0){
-                    room._enemiesInRoom.push(Goblin = new Enemy("goblin",(6*currentPlayer.level), 3))
+                    room._enemiesInRoom.push(Goblin = new Enemy("goblin",(12*currentPlayer.level), 3))
                     room._combat = true
                }
                else if(enemies == 1 || enemies == 2){
-                    room._enemiesInRoom.push(slime = new Enemy("slime",(3*currentPlayer.level), 1))
+                    room._enemiesInRoom.push(slime = new Enemy("slime",(6*currentPlayer.level), 1))
                     room._combat = true
                }
                else{
