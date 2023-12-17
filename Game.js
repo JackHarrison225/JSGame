@@ -766,7 +766,7 @@ function showGame(){
 function gameStart(){
      currentRoom = Tore
      currentPlayer._dead = false;
-     document.getElementById("TextOutput").innerText = "You are a " + currentPlayer._EntetyName + ". Your home town of " + currentRoom._name + " is a small town. Goblins have taken over the nearby mines cutting off the path for outsiders and merchants. your goal is to kill all the monsters within the mines (Reach level 5). This will alow your town to grow possibly even allowing you to become the mayor of town. " + "\n" + currentRoom._name + "\n"+ currentRoom._description + "\nDirection: " + showdirectionsArea()
+     document.getElementById("TextOutput").innerText = "You are a " + currentPlayer._EntetyName + ". Your home town of " + currentRoom._name + " is a small town. Monsters have taken over the nearby mines cutting off the path for outsiders and merchants. your goal is to kill all the monsters within the mines (Reach level 5). This will alow your town to grow possibly even allowing you to become the mayor of town. " + "\n" + currentRoom._name + "\n"+ currentRoom._description + "\nDirection: " + showdirectionsArea()
      setUpScreen()
 
      if (currentPlayer._hitPoints > 0){
