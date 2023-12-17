@@ -202,15 +202,12 @@ class Player extends Entety{
      setmaxHitPoints(){
           this._maxHitPoints = (this._basehitPoints * this.level) + this._stats.ConsMod
      }
-     buyItem(item){
-          if(gold - item._cost < 0){
-               console.log("Not enough gold. you have " + this.gold)
-          }
+     buyItem(itemName){
+          
      }
 
-     sellItem(item){
+     sellItem(itemName){
           
-          delete(this.inventory, item)
      }
 
      death(){
@@ -271,12 +268,31 @@ class Player extends Entety{
 
      }
 
-     changeArmour(armourName){
-          
-     }
-     
-     changeWeapon(WeaponName){
+     equipItem(itemname){
 
+          let pathA = this._inventory._Armours
+          let pathW = this._inventory._Weapons
+
+          for(let i = 0; i < pathA.length; i+=2){
+               if(itemname == pathA[i]._ItemName && pathA[i+1].total > 0){
+                    this.collectItem(this._equipt.ArmourEquipt)
+                    this._equipt.ArmourEquipt = pathA[i]
+                    pathA[i+1].total -=1
+                    this._armour = this._equipt.ArmourEquipt._defense
+                    this.setArmourClass()
+                    return setUpScreen()
+               }
+          }
+          for(let i = 0; i < pathW.length; i+=2){
+               if(itemname == pathW[i]._ItemName && pathW[i+1].total > 0){
+                    this.collectItem(this._equipt.WeaponEquipt)
+                    this._equipt.WeaponEquipt = pathW[i]
+                    pathW[i+1].total -=1
+                    this.setArmourClass()
+                    return setUpScreen()
+               }
+          }
+          
      }
 
      levelUp(){
@@ -347,20 +363,20 @@ class Player extends Entety{
           }    
           
           else if(potion == "mana"){
-               for(let i = 0; i < this._inventory._Potions.length; i+=1){
-                    if((this._inventory._Potions[i]._ItemName == "mana Pot") && this._inventory._Potions[i+1].total > 0){
+               for(let i = 0; i < this._inventory._Potions.length; i+=2){
+                    if((this._inventory._Potions[i]._ItemName == "manaPot") && this._inventory._Potions[i+1].total > 0){
                          this._mana += 3
                          this._inventory._Potions[i+1].total -= 1
                          setUpScreen()
                          return setImg("img/PotionDrank.png");
                     }
-                    else if((this._inventory._Potions[i]._ItemName == "mana Pot +1") && this._inventory._Potions[i+1].total > 0){
+                    else if((this._inventory._Potions[i]._ItemName == "manaPot+1") && this._inventory._Potions[i+1].total > 0){
                          this._mana += 6
                          this._inventory._Potions[i+1].total -= 1
                          setUpScreen()
                          return setImg("img/PotionDrank.png");
                     }
-                    else if((this._inventory._Potions[i]._ItemName == "mana Pot +2") && this._inventory._Potions[i+1].total > 0){
+                    else if((this._inventory._Potions[i]._ItemName == "manaPot+2") && this._inventory._Potions[i+1].total > 0){
                          this._mana += 9
                          this._inventory._Potions[i+1].total -= 1
                          setUpScreen()
@@ -385,120 +401,152 @@ class Player extends Entety{
           for(let i = 0; i < (pathP).length; i+=2){
                if(pathP[i]._ItemName == item._ItemName){
                     pathP[i+1].total += 1;
-                    currentRoom._itemsInRoom = [];
                     setUpScreen()
                     changeRoomInfo()
-                    setImg("img/NewPotion.png")
+                    return setImg("img/NewPotion.png")
                }
           }
           for(let i = 0; i < (pathA).length; i+=2){
                if(pathA[i]._ItemName == item._ItemName){
                     pathA[i+1].total += 1 
-                    currentRoom._itemsInRoom = []
                     setUpScreen()
                     changeRoomInfo()
-                    setImg("img/NewArmour.png")
+                    return setImg("img/NewArmour.png")
                }
           }
           for(let i = 0; i < (pathW).length; i+=2){
                if(pathW[i]._ItemName == item._ItemName){
                     pathW[i+1].total += 1
-                    currentRoom._itemsInRoom = []
                     setUpScreen()
                     changeRoomInfo()
-                    setImg("img/NewWeapon.png")
+                    return setImg("img/NewWeapon.png")
                }
           }
           if (item._type == "Potion"){
                pathP.push(item)
                pathP.push({total : 1})
-               currentRoom._itemsInRoom = []
                setUpScreen()
                changeRoomInfo()
-               setImg("img/NewPotion.png")
+               return setImg("img/NewPotion.png")
           }
           if (item._type == "Armour"){
                pathA.push(item)
                pathA.push({total : 1})
-               currentRoom._itemsInRoom = []
                setUpScreen()
                changeRoomInfo()
-               setImg("img/NewArmour.png")
+               return setImg("img/NewArmour.png")
           }
           if (item._type == "Weapon"){
                pathW.push(item) 
                pathW.push({total : 1})
-               currentRoom._itemsInRoom = []
                setUpScreen()
                changeRoomInfo()
-               setImg("img/NewWeapon.png")
-          }
-          return 
+               return setImg("img/NewWeapon.png")
+          } 
           
      }
 
      setWeight(){
 
      }
+     
+     dropItem(itemname){
+          console.log(itemname)
+          
+          let item = {}
+          for(let i = 0; i < this._inventory._Weapons.length; i+= 2){
+               console.log(this._inventory._Weapons[i]._ItemName + " Name")
+               console.log(this._inventory._Weapons[i+1].total + " value")
+               if(this._inventory._Weapons[i]._ItemName == itemname && this._inventory._Weapons[i+1].total > 0){
+                    this._inventory._Weapons[i+1].total -= 1
+                    item = this._inventory._Weapons[i]
+                    currentRoom._itemsInRoom.push(item)
+                    setUpScreen()
+                    return changeRoomInfo()
+               }
+          }
+          for(let i = 0; i < this._inventory._Armours.length; i+= 2){
+               console.log(this._inventory._Armours[i]._ItemName)
+               console.log(this._inventory._Armours[i+1].total)
+               if(this._inventory._Armours[i]._ItemName == itemname && this._inventory._Armours[i+1].total > 0){
+                    this._inventory._Armours[i+1].total -= 1
+                    item = this._inventory._Armours[i]
+                    currentRoom._itemsInRoom.push(item)
+                    setUpScreen()
+                    return changeRoomInfo()
+               }
+          }
+          for(let i = 0; i < this._inventory._Potions.length; i+= 2){
+               console.log(this._inventory._Potions[i]._ItemName)
+               console.log(this._inventory._Weapons[i+1].total)
+               if(this._inventory._Potions[i]._ItemName == itemname && this._inventory._Potions[i+1].total > 0){
+                    this._inventory._Potions[i+1].total -= 1
+                    item = this._inventory._Potions[i]
+                    currentRoom._itemsInRoom.push(item)
+                    setUpScreen()
+                    return changeRoomInfo()
+               }
+          }
+     }
 }
 
 //create items
 //weapons (name, weight, attack, type, cost) //basic
-const BasicWand = new Weapon("Basic Wand",5 ,4 ,"magic", 15);
-const BasicClub = new Weapon("Basic Club",9 ,5 , "blunt", 15);
-const BasicAxe = new Weapon("Basic Axe",4 ,5 , "finness", 15);
-const BasicDagger = new Weapon("Basic Dagger",3 ,4 , "finness", 15);
+const BasicWand = new Weapon("BasicWand",5 ,4 ,"magic", 15);
+const BasicClub = new Weapon("BasicClub",9 ,5 , "blunt", 15);
+const BasicAxe = new Weapon("BasicAxe",4 ,5 , "finness", 15);
+const BasicDagger = new Weapon("BasicDagger",3 ,4 , "finness", 15);
 // BasicWand, BasicClub, BasicAxe, BasicDagger
 //basic+1
-const BasicWandPlus1 = new Weapon("Basic Wand +1", 5, 5, "magic", 20);
-const BasicClubPlus1 = new Weapon("Basic Club +1", 9, 6, "blunt", 20);
-const BasicAxePlus1 = new Weapon("Basic Axe +1", 4, 6, "finness", 20);
-const BasicDaggerPlus1 = new Weapon("Basic Dagger +1", 3, 5, "finness", 20);
+const BasicWandPlus1 = new Weapon("BasicWand+1", 5, 5, "magic", 20);
+const BasicClubPlus1 = new Weapon("BasicClub+1", 9, 6, "blunt", 20);
+const BasicAxePlus1 = new Weapon("BasicAxe+1", 4, 6, "finness", 20);
+const BasicDaggerPlus1 = new Weapon("BasicDagger+1", 3, 5, "finness", 20);
 //normal
-const NormalWand = new Weapon("Normal Wand", 5, 8,"magic", 25);
-const NormalClub = new Weapon("Normal Club", 9, 10, "blunt", 25);
-const NormalAxe = new Weapon("Normal Axe", 4, 10, "finness", 25);
-const NormalDagger = new Weapon("Normal Dagger", 3, 8, "finness", 25);
+const NormalWand = new Weapon("NormalWand", 5, 8,"magic", 25);
+const NormalClub = new Weapon("NormalClub", 9, 10, "blunt", 25);
+const NormalAxe = new Weapon("NormalAxe", 4, 10, "finness", 25);
+const NormalDagger = new Weapon("NormalDagger", 3, 8, "finness", 25);
 //normal+1
-const NormalWandPlus1 = new Weapon("Normal Wand +1", 5, 9,"magic", 30);
-const NormalClubPlus1 = new Weapon("Normal Club +1", 9, 11, "blunt", 30);
-const NormalAxePlus1 = new Weapon("Normal Axe +1", 4, 11, "finness", 30);
-const NormalDaggerPlus1 = new Weapon("Normal Dagger +1", 3, 9, "finness", 30);
+const NormalWandPlus1 = new Weapon("NormalWand+1", 5, 9,"magic", 30);
+const NormalClubPlus1 = new Weapon("NormalClub+1", 9, 11, "blunt", 30);
+const NormalAxePlus1 = new Weapon("NormalAxe+1", 4, 11, "finness", 30);
+const NormalDaggerPlus1 = new Weapon("NormalDagger+1", 3, 9, "finness", 30);
 //advanced
-const AdvancedWand = new Weapon("Advanced Wand", 5, 12,"magic", 35);
-const AdvancedClub = new Weapon("Advanced Club", 9, 15, "blunt", 35);
-const AdvancedAxe = new Weapon("Advanced Axe", 4, 15, "finness", 35);
-const AdvancedDagger = new Weapon("Advanced Dagger", 3, 12, "finness", 35);
+const AdvancedWand = new Weapon("AdvancedWand", 5, 12,"magic", 35);
+const AdvancedClub = new Weapon("AdvancedClub", 9, 15, "blunt", 35);
+const AdvancedAxe = new Weapon("AdvancedAxe", 4, 15, "finness", 35);
+const AdvancedDagger = new Weapon("AdvancedDagger", 3, 12, "finness", 35);
 //advanced+1
-const AdvancedWandPlus1 = new Weapon("Advanced Wand +1", 5, 12,"magic", 40);
-const AdvancedClubPlus1 = new Weapon("Advanced Club +1", 9, 15, "blunt", 40);
-const AdvancedAxePlus1 = new Weapon("Advanced Axe +1", 4, 15, "finness", 40);
-const AdvancedDaggerPlus1 = new Weapon("Advanced Dagger +1", 3, 12, "finness", 40);
+const AdvancedWandPlus1 = new Weapon("AdvancedWand+1", 5, 12,"magic", 40);
+const AdvancedClubPlus1 = new Weapon("AdvancedClub+1", 9, 15, "blunt", 40);
+const AdvancedAxePlus1 = new Weapon("AdvancedAxe+1", 4, 15, "finness", 40);
+const AdvancedDaggerPlus1 = new Weapon("AdvancedDagger+1", 3, 12, "finness", 40);
 
 //Armour (name , weight , defense , cost)
-const NoArmour = new Armour("No Armour", 0, 0, 0);
+const NoArmour = new Armour("NoArmour", 0, 0, 0);
 //basic 
-const BasicLeather = new Armour("Basic Leather", 12, 13, 20);
-const BasicChain = new Armour("Basic Chain", 15, 14, 22);
-const BasicPlate = new Armour("Basic Plate", 20, 15, 24);
+const BasicLeather = new Armour("BasicLeather", 12, 13, 20);
+const BasicChain = new Armour("BasicChain", 15, 14, 22);
+const BasicPlate = new Armour("BasicPlate", 20, 15, 24);
 //normal
-const NormalLeather = new Armour("Basic Leather", 14, 15, 25);
-const NormalChain = new Armour("Basic Chain", 17, 16, 27);
-const NormalPlate = new Armour("Basic Plate", 22, 17, 29);
+const NormalLeather = new Armour("BasicLeather", 14, 15, 25);
+const NormalChain = new Armour("BasicChain", 17, 16, 27);
+const NormalPlate = new Armour("BasicPlate", 22, 17, 29);
 //advanced
-const AdvancedLeather = new Armour("Basic Leather", 15, 17, 30);
-const AdvancedChain = new Armour("Basic Chain", 19, 18, 32);
-const AdvancedPlate = new Armour("Basic Plate", 24, 19, 34);
+const AdvancedLeather = new Armour("BasicLeather", 15, 17, 30);
+const AdvancedChain = new Armour("BasicChain", 19, 18, 32);
+const AdvancedPlate = new Armour("BasicPlate", 24, 19, 34);
 
 //Potions (name weight desciption, cost)
-const healingPot = new Potion("healing Pot", 0.5, "Small bottle containing funky smelling red liquid.", 5)
-const manaPot = new Potion("mana Pot", 0.5, "Small bottle containing funky smelling blue liquid.", 5)
+const healingPot = new Potion("healingPot", 0.5, "Small bottle containing funky smelling red liquid.", 5)
+const manaPot = new Potion("manaPot", 0.5, "Small bottle containing funky smelling blue liquid.", 5)
 //Potions +1
-const healingPotPlus1 = new Potion("healing Pot +1", 0.75, "medium bottle containing funky smelling red liquid.", 7)
-const manaPotPlus1 = new Potion("mana Pot +1", 0.75, "medium bottle containing funky smelling blue liquid.", 7)
+const healingPotPlus1 = new Potion("healingPot+1", 0.75, "medium bottle containing funky smelling red liquid.", 7)
+const manaPotPlus1 = new Potion("manaPot+1", 0.75, "medium bottle containing funky smelling blue liquid.", 7)
 //Potions +2
-const healingPotPlus2 = new Potion("healing Pot +2", 1, "large bottle containing funky smelling red liquid.", 9)
-const manaPotPlus2 = new Potion("mana Pot +2", 1, "lerge bottle containing funky smelling blue liquid.", 9)
+const healingPotPlus2 = new Potion("healingPot+2", 1, "large bottle containing funky smelling red liquid.", 9)
+const manaPotPlus2 = new Potion("manaPot+2", 1, "lerge bottle containing funky smelling blue liquid.", 9)
 
 
 //create NPC
@@ -575,7 +623,7 @@ function setWiz(){
      
           //inventory
           {_Potions : [healingPot, {total : 3}, manaPot, {total : 3}],
-          _Armours : [NoArmour,{total : 1}, BasicLeather, {total : 1}],
+          _Armours : [NoArmour,{total : 1}, BasicLeather, {total : 0}],
           _Weapons : [BasicWand, {total : 1}]},
           //gold
           15)
@@ -600,7 +648,7 @@ function setBar(){
      
           //inventory
           {_Potions : [healingPot, { total : 6}, manaPot, {total : 0}],
-          _Armours : [NoArmour, {total : 1}, BasicPlate, {total : 1}],
+          _Armours : [NoArmour, {total : 1}, BasicPlate, {total : 0}],
           _Weapons : [BasicClub, {total : 1}]},
           //gold
           15)
@@ -625,7 +673,7 @@ function setCle(){
      
           //inventory
           {_Potions : [healingPot, {total : 6}, manaPot, {total : 0}],
-          _Armours : [NoArmour, {total : 1}, BasicChain, {total : 1}],
+          _Armours : [NoArmour, {total : 1}, BasicChain, {total : 0}],
           _Weapons : [BasicAxe, {total : 1}]},
           //gold
           15)
@@ -650,7 +698,7 @@ function setRog(){
      
           //inventory
           {_Potions : [healingPot, {total : 6}, manaPot, {total : 0}],
-          _Armours : [NoArmour, {total : 1}, BasicLeather, {total : 1}],
+          _Armours : [NoArmour, {total : 0}, BasicLeather, {total : 1}],
           _Weapons : [BasicDagger, {total : 1}]},
           //gold
           15)
@@ -692,6 +740,10 @@ function gameStart(){
                     const heal = ["heal"]
                     const mana = ["mana"]
                     const collect = ["collect"]
+                    const drop = ["drop"]
+                    const equip = ["equip"]
+                    const buy = ["buy"]
+                    const sell = ["sell"]
 
 
                     if(directions.includes(command.toLowerCase())){
@@ -752,14 +804,41 @@ function gameStart(){
                     }
 
                     else if(collect.includes(command.toLowerCase())){
-                         for(i in currentRoom._itemsInRoom){
+                         for(let i = 0; i < currentRoom._itemsInRoom.length; i+=1){
                               currentPlayer.collectItem(currentRoom._itemsInRoom[i])
                          }
+                         currentRoom._itemsInRoom = []
+                         changeRoomInfo()
                          document.getElementById("CommandsInput").value = ""
                          setTimeout(() => {setImg(currentRoom._Img)}, 2000);
                          return 
                     }
-                    
+                    else if((command.toLowerCase()).includes(drop)){
+                         words = command.split(' ')
+                         currentPlayer.dropItem(words[1])
+                         changeRoomInfo()
+                         document.getElementById("CommandsInput").value = ""
+                    }
+                    else if((command.toLowerCase()).includes(buy)){
+                         words = command.split(' ')
+                         currentPlayer.buyItem(words[1])
+                         changeRoomInfo()
+                         document.getElementById("CommandsInput").value = ""
+                    }
+                    else if((command.toLowerCase()).includes(sell)){
+                         words = command.split(' ')
+                         currentPlayer.sellItem(words[1])
+                         changeRoomInfo()
+                         document.getElementById("CommandsInput").value = ""
+                    }
+                    else if((command.toLowerCase()).includes(equip)){
+                         words = command.split(' ')
+                         currentPlayer.equipItem(words[1])
+                         changeRoomInfo()
+                         document.getElementById("CommandsInput").value = ""
+                    }
+
+
                     
                     else{alert("that is not a valid command please try again")}
 
@@ -1303,6 +1382,8 @@ function setUpScreen(){
      document.getElementById("Potions").innerText = "Owned Potions: \n" + setItems(currentPlayer._inventory._Potions);
      document.getElementById("Armour").innerText = "Owned Armours: \n" + setItems(currentPlayer._inventory._Armours);
      document.getElementById("Weapons").innerText = "Owned Weapons: \n" + setItems(currentPlayer._inventory._Weapons);
+     document.getElementById("AC").innerText = "Armour Class: " + currentPlayer._armourClass
+     document.getElementById("BaseDamage").innerText = "Damage: " + BaseDamge()
 
      document.getElementById("ImgOfRoom").src = currentRoom._Img
      document.getElementById("Name").innerText = currentPlayer._EntetyName;
@@ -1316,6 +1397,27 @@ function setUpScreen(){
      document.getElementById("InteMod").innerText = "Inteligance: " + currentPlayer._stats.InteMod;
      document.getElementById("WisMod").innerText = "Wisdom: " + currentPlayer._stats.WisMod;
      document.getElementById("CharMod").innerText = "Charisma: " + currentPlayer._stats.CharMod;
+}
+
+function BaseDamge(){
+     let damageGiven = currentPlayer._equipt.WeaponEquipt._damage
+     if(currentPlayer._equipt.WeaponEquipt._damageType == "magic")
+     {
+          if(currentPlayer._mana > 0)
+          {
+               let damage_bonus = currentPlayer._stats.InteMod
+               damageGiven += damage_bonus
+          }
+     }
+     else if(currentPlayer._equipt.WeaponEquipt._damageType == "blunt"){
+          let damage_bonus = currentPlayer._stats.StrMod
+          damageGiven += damage_bonus
+     }
+     else if(currentPlayer._equipt.WeaponEquipt._damageType == "finness"){
+          let damage_bonus = currentPlayer._stats.DexMod
+          damageGiven += damage_bonus
+     }
+     return(damageGiven)
 }
 function setItems(path){
      let List = []
