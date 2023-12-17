@@ -55,9 +55,7 @@ class Room {
           } 
           else {
                setImg("img/NotThatWay.png")
-               setTimeout(() => {setImg(currentRoom._Img)}, 2000);
-               
-               return this;
+               return
           }
      }
 
@@ -65,7 +63,7 @@ class Room {
           this._linkedRooms[direction] = roomToLink;
      }
 }
-class DungeonEntrance extends Room{
+class CaveEntrance extends Room{
      constructor(name, description){
           super(name, description)
           
@@ -95,8 +93,8 @@ class Town extends Room{
      }
 
      enterDungeon(){
-          dungeonEntrance.createDungeon()
-          currentRoom = dungeonEntrance
+          caveEntrance.createDungeon()
+          currentRoom = caveEntrance
      }
 }
 
@@ -173,7 +171,6 @@ class Enemy extends Entety{
           changeRoomInfo()
           if(this._EntetyName == "goblin"){setImg("img/GoblinDead.png")}
           else if(this._EntetyName == "slime"){setImg("img/SlimeDead.png")}
-          setTimeout(() => {setImg(currentRoom._Img)}, 2000);
      }
 
      takeDamage(damageToTake){
@@ -227,16 +224,15 @@ class Player extends Entety{
           }
           document.getElementById("HitPoints").innerText = "HitPoints: " + currentPlayer._hitPoints + "/" + currentPlayer._maxHitPoints;
 
-          setTimeout(() => {setImg(currentRoom._Img)}, 2000);
+          
      }
      
      rollToHit(enemy){
           let hitVal = Math.floor(Math.random()*20)
           if(hitVal > enemy._armourClass-1)
           {
-               
-               if(currentRoom._enemiesInRoom._EntetyName == "goblin"){setImg("img/GoblinHit.png")}
-               else if(currentRoom._enemiesInRoom._EntetyName == "slime"){setImg("img/SlimeHit.png")}
+               if(enemy._EntetyName == "goblin"){setImg("img/GoblinHit.png")}
+               else if(enemy._EntetyName == "slime"){setImg("img/SlimeHit.png")}
                let damageGiven = this._equipt.WeaponEquipt._damage
                if(this._equipt.WeaponEquipt.damgeType == "magic")
                {
@@ -257,9 +253,13 @@ class Player extends Entety{
                }
                enemy.takeDamage(damageGiven)
           }
-          else{if(currentRoom._enemiesInRoom._EntetyName == "goblin"){setImg("img/MissGoblin.png")}
-               else if(currentRoom._enemiesInRoom._EntetyName == "slime"){setImg("img/MissSlime.png")}
-               return  setTimeout(() => {setImg(currentRoom._Img)}, 2000);}
+          else{
+               if(enemy._EntetyName == "goblin")
+                    {return setImg("img/MissGoblin.png")}
+               else if(enemy._EntetyName == "slime")
+                    {return setImg("img/MissSlime.png")}
+               }
+          
 
      }
 
@@ -282,7 +282,7 @@ class Player extends Entety{
                }
                setUpScreen()
                setImg("img/LevelUp.png");
-               setTimeout(() => {setImg(currentRoom._Img)}, 2000);
+               
                
           }
      }
@@ -301,7 +301,7 @@ class Player extends Entety{
                               }
                               setUpScreen()
                               setImg("img/PotionDrank.png")
-                              return  setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
+                              
                          }
                          
                     }
@@ -315,7 +315,7 @@ class Player extends Entety{
                               }
                               setUpScreen()
                               setImg("img/PotionDrank.png")
-                              return  setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
+                              
                          }   
                     }
                     else if((this._inventory._Potions[i]._ItemName == "healing Pot +2") && this._inventory._Potions[i+1].total > 0){
@@ -328,13 +328,14 @@ class Player extends Entety{
                               }
                               setUpScreen()
                               setImg("img/PotionDrank.png")
-                              return setTimeout(() => {console.log("mana")}, 2000);
-                         }else {setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
-                              return  setImg("img/FullHP.png")}
+                              ;
+                         }else {;
+                             setImg("img/FullHP.png")
+                             }
                          
                     }
-                    else {setImg("img/EmptyPotion.png")
-                    return  setTimeout(() => {setImg(currentRoom._Img)}, 2000);;}
+                    else {setImg("img/EmptyPotion.png")}
+                    return 
                }
                
           }    
@@ -345,26 +346,24 @@ class Player extends Entety{
                          this._mana += 3
                          this._inventory._Potions[i+1].total -= 1
                          setUpScreen()
-                         setImg("img/PotionDrank.png")
-                         return  setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
+                         setImg("img/PotionDrank.png");
                     }
                     else if((this._inventory._Potions[i]._ItemName == "mana Pot +1") && this._inventory._Potions[i+1].total > 0){
                          this._mana += 6
                          this._inventory._Potions[i+1].total -= 1
                          setUpScreen()
-                         setImg("img/PotionDrank.png")
-                         return  setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
+                         setImg("img/PotionDrank.png");
                     }
                     else if((this._inventory._Potions[i]._ItemName == "mana Pot +2") && this._inventory._Potions[i+1].total > 0){
                          this._mana += 9
                          this._inventory._Potions[i+1].total -= 1
                          setUpScreen()
-                         setImg("img/PotionDrank.png")
-                         return  setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
+                         setImg("img/PotionDrank.png");
                     }
                     
-               }setImg("img/EmptyPotion.png") 
-               return setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
+               }
+               setImg("img/EmptyPotion.png") 
+               return 
                
           }
           setUpScreen()
@@ -384,8 +383,6 @@ class Player extends Entety{
                     setUpScreen()
                     changeRoomInfo()
                     setImg("img/NewPotion.png")
-                    setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
-                    return
                }
           }
           for(let i = 0; i < (pathA).length; i+=2){
@@ -395,8 +392,6 @@ class Player extends Entety{
                     setUpScreen()
                     changeRoomInfo()
                     setImg("img/NewArmour.png")
-                    setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
-                    return
                }
           }
           for(let i = 0; i < (pathW).length; i+=2){
@@ -406,8 +401,6 @@ class Player extends Entety{
                     setUpScreen()
                     changeRoomInfo()
                     setImg("img/NewWeapon.png")
-                    setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
-                    return
                }
           }
           if (item._type == "Potion"){
@@ -417,8 +410,6 @@ class Player extends Entety{
                setUpScreen()
                changeRoomInfo()
                setImg("img/NewPotion.png")
-               setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
-               return
           }
           if (item._type == "Armour"){
                pathA.push(item)
@@ -427,8 +418,6 @@ class Player extends Entety{
                setUpScreen()
                changeRoomInfo()
                setImg("img/NewArmour.png")
-               setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
-               return
           }
           if (item._type == "Weapon"){
                pathW.push(item) 
@@ -437,9 +426,8 @@ class Player extends Entety{
                setUpScreen()
                changeRoomInfo()
                setImg("img/NewWeapon.png")
-               setTimeout(() => {setImg(currentRoom._Img)}, 2000);;
-               return
           }
+          return 
           
      }
 
@@ -551,10 +539,10 @@ weaponShop._Img = ""
 const armourShop = new shop("armourShop", Adventurer, "armour", basicArmourList, "Metals hooks and racks fill the small space leather, chain and plate aroumr cover every surface.")
 armourShop._Img = ""
 //dungeon
-const dungeonEntrance = new DungeonEntrance("dungeonEntrance", "A vast chasm of rock opens up before you. Vines and moss line each wall, inviting only the bravest to enter.")
-dungeonEntrance._Img = "img/CaveEntrance.png"
-const dungeonExit = new DungeonEntrance("dungeonExit", "The light from the entrance still floods the cavern.")
-dungeonExit._Img =" img/CaveExit.png"
+const caveEntrance = new CaveEntrance("CaveEntrance", "A vast chasm of rock opens up before you. Vines and moss line each wall, inviting only the bravest to enter.")
+caveEntrance._Img = "img/CaveEntrance.png"
+const caveExit = new DungeonRoom("CaveExit", "The light from the entrance still floods the cavern.")
+caveExit._Img ="img/CaveExit.png"
 //dungeon rooms are created in create dungeon called on entry to dungeon
 //link rooms
 potionShop.linkRoom("west", Tore)
@@ -564,9 +552,9 @@ armourShop.linkRoom("east", Tore)
 Tore.linkRoom("east", potionShop)
 Tore.linkRoom("north", weaponShop)
 Tore.linkRoom("west", armourShop)
-Tore.linkRoom("south", dungeonEntrance)
+Tore.linkRoom("south", caveEntrance)
 
-dungeonEntrance.linkRoom("north", Tore)
+caveEntrance.linkRoom("north", Tore)
 
 
 //functions for running and setting up game
@@ -708,49 +696,56 @@ function gameStart(){
                          document.getElementById("CommandsInput").value = ""
                          changeRoomInfo()
                          console.log(currentRoom);
+                         setTimeout(() => {setImg(currentRoom._Img)}, 2000);
                     }
 
                     else if(enter.includes(command.toLowerCase())){
 
-                         if(currentRoom._name == "dungeonEntrance")
+                         if(currentRoom._name == "CaveEntrance")
                          {
                               buildDungeon()
-                              currentRoom = dungeonExit
+                              currentRoom = caveExit
                               document.getElementById("CommandsInput").value = ""
                               changeRoomInfo()
                               
                          }
                          else {alert("Go to the dungeon entrance to enter")}
+                         setTimeout(() => {setImg(currentRoom._Img)}, 2000);
                     }
 
                     else if(exit.includes(command.toLowerCase())){
-                         if(currentRoom._name == "dungeonExit")
+                         if(currentRoom._name == "CaveExit")
                          {
-                              currentRoom = dungeonEntrance
+                              currentRoom = caveEntrance
                               document.getElementById("CommandsInput").value = ""
                               changeRoomInfo()
                          }
                          else {alert("Go to the dungeon exit to exit")}
+                         setTimeout(() => {setImg(currentRoom._Img)}, 2000);
                     }
                     
                     else if(attackEnemny.includes(command.toLowerCase())){
                          document.getElementById("CommandsInput").value = ""
                          if(currentRoom._enemiesInRoom.length > 0){
                               for(i in currentRoom._enemiesInRoom){
-                                   
                                    currentPlayer.rollToHit(currentRoom._enemiesInRoom[i])
                               }
                          }
-                         else {setImg("img/NoEnemy.png")
-                         return  setTimeout(() => {setImg(currentRoom._Img)}, 2000);;}
+                         else {setImg("img/NoEnemy.png")}
+                         setTimeout(() => {setImg(currentRoom._Img)}, 2000);
+                         return 
                     }
                     else if(heal.includes(command.toLowerCase())){
                          currentPlayer.takePotion("healing")
                          document.getElementById("CommandsInput").value = ""
+                         setTimeout(() => {setImg(currentRoom._Img)}, 2000);
+                         return 
                     }
                     else if(mana.includes(command.toLowerCase())){
                          currentPlayer.takePotion("mana")
                          document.getElementById("CommandsInput").value = ""
+                         setTimeout(() => {setImg(currentRoom._Img)}, 2000);
+                         return 
                     }
 
                     else if(collect.includes(command.toLowerCase())){
@@ -758,15 +753,16 @@ function gameStart(){
                               currentPlayer.collectItem(currentRoom._itemsInRoom[i])
                          }
                          document.getElementById("CommandsInput").value = ""
+                         return setTimeout(() => {setImg(currentRoom._Img)}, 2000);
                     }
                     
                     
                     else{alert("that is not a valid command please try again")}
-
                     if (currentRoom._combat == true){
                          for(i in currentRoom._enemiesInRoom){
                               currentRoom._enemiesInRoom[i].attack()
                          }
+                         return  setTimeout(() => {setImg(currentRoom._Img)}, 2000);
                     }
 
                }  
@@ -819,10 +815,10 @@ function buildDungeon(){
      switch(layout){
           case 0:
                //link rooms
-               dungeonExit._linkedRooms = []
-               dungeonExit.linkRoom("north", DungeonRoomOne)
+               caveExit._linkedRooms = []
+               caveExit.linkRoom("north", DungeonRoomOne)
                //room one
-               DungeonRoomOne.linkRoom("south", dungeonExit)
+               DungeonRoomOne.linkRoom("south", caveExit)
                DungeonRoomOne.linkRoom("north", DungeonRoomTwo)
                DungeonRoomOne.linkRoom("west", DungeonRoomThree)
                DungeonRoomOne.linkRoom("east", DungeonRoomFour)
@@ -853,10 +849,10 @@ function buildDungeon(){
 
           case 1:
                //link rooms
-               dungeonExit._linkedRooms = []
-               dungeonExit.linkRoom("north", DungeonRoomOne)
+               caveExit._linkedRooms = []
+               caveExit.linkRoom("north", DungeonRoomOne)
                //room one
-               DungeonRoomOne.linkRoom("south", dungeonExit)
+               DungeonRoomOne.linkRoom("south", caveExit)
                DungeonRoomOne.linkRoom("west", DungeonRoomTwo)
                DungeonRoomOne.linkRoom("east", SecretRoom)
                //room two
@@ -882,16 +878,16 @@ function buildDungeon(){
                DungeonRoomEight.linkRoom("west", DungeonRoomSeven)
                //secrate room
                SecretRoom.linkRoom("north", DungeonRoomSeven)
-               SecretRoom.linkRoom("east", dungeonExit)
+               SecretRoom.linkRoom("east", caveExit)
                break;
 
           case 2:
 
                //link rooms
-               dungeonExit._linkedRooms = []
-               dungeonExit.linkRoom("north", DungeonRoomOne)
+               caveExit._linkedRooms = []
+               caveExit.linkRoom("north", DungeonRoomOne)
                //room one
-               DungeonRoomOne.linkRoom("south", dungeonExit)
+               DungeonRoomOne.linkRoom("south", caveExit)
                DungeonRoomOne.linkRoom("north", DungeonRoomTwo)
                DungeonRoomOne.linkRoom("west", DungeonRoomThree)
                DungeonRoomOne.linkRoom("east", DungeonRoomFour)
@@ -918,26 +914,26 @@ function buildDungeon(){
                DungeonRoomEight.linkRoom("east", SecretRoom)
                //secrate room
                SecretRoom.linkRoom("west", DungeonRoomEight)
-               SecretRoom.linkRoom("east", dungeonExit)
+               SecretRoom.linkRoom("east", caveExit)
                break;
 
           case 3:
                //link rooms
-               dungeonExit._linkedRooms = []
-               dungeonExit.linkRoom("north", DungeonRoomThree)
-               dungeonExit.linkRoom("east", DungeonRoomOne)
-               dungeonExit.linkRoom("south", DungeonRoomSeven)
-               dungeonExit.linkRoom("west", DungeonRoomFive)
+               caveExit._linkedRooms = []
+               caveExit.linkRoom("north", DungeonRoomThree)
+               caveExit.linkRoom("east", DungeonRoomOne)
+               caveExit.linkRoom("south", DungeonRoomSeven)
+               caveExit.linkRoom("west", DungeonRoomFive)
                //room one
                DungeonRoomOne.linkRoom("south", DungeonRoomEight)
                DungeonRoomOne.linkRoom("north", DungeonRoomTwo)
-               DungeonRoomOne.linkRoom("west", dungeonExit)
+               DungeonRoomOne.linkRoom("west", caveExit)
 
                //room two
                DungeonRoomTwo.linkRoom("south", DungeonRoomOne)
                DungeonRoomTwo.linkRoom("west", DungeonRoomThree)
                //room three
-               DungeonRoomThree.linkRoom("south", dungeonExit)
+               DungeonRoomThree.linkRoom("south", caveExit)
                DungeonRoomThree.linkRoom("west", DungeonRoomFour)
                DungeonRoomThree.linkRoom("east", DungeonRoomTwo)
                //room four
@@ -946,7 +942,7 @@ function buildDungeon(){
                //room five
                DungeonRoomFive.linkRoom("north", DungeonRoomFour)
                DungeonRoomFive.linkRoom("south", DungeonRoomSix)
-               DungeonRoomFive.linkRoom("east", dungeonExit)
+               DungeonRoomFive.linkRoom("east", caveExit)
                //room six
                DungeonRoomSix.linkRoom("east", DungeonRoomSeven)
                DungeonRoomSix.linkRoom("north", DungeonRoomFive)
@@ -961,10 +957,10 @@ function buildDungeon(){
 
           case 4:
                //link rooms
-               dungeonExit._linkedRooms = []
-               dungeonExit.linkRoom("south", DungeonRoomOne)
+               caveExit._linkedRooms = []
+               caveExit.linkRoom("south", DungeonRoomOne)
                //room one
-               DungeonRoomOne.linkRoom("north", dungeonExit)
+               DungeonRoomOne.linkRoom("north", caveExit)
                DungeonRoomOne.linkRoom("east", DungeonRoomTwo)
                //room two
                DungeonRoomTwo.linkRoom("south", DungeonRoomEight)
@@ -993,16 +989,16 @@ function buildDungeon(){
                DungeonRoomEight.linkRoom("north", DungeonRoomTwo)
                //secrate room
                SecretRoom.linkRoom("west", DungeonRoomSeven)
-               SecretRoom.linkRoom("east", dungeonExit)
+               SecretRoom.linkRoom("east", caveExit)
 
                break;
 
           case 5:
                //link rooms
-               dungeonExit._linkedRooms = []
-               dungeonExit.linkRoom("south", DungeonRoomOne)
+               caveExit._linkedRooms = []
+               caveExit.linkRoom("south", DungeonRoomOne)
                //room one
-               DungeonRoomOne.linkRoom("north", dungeonExit)
+               DungeonRoomOne.linkRoom("north", caveExit)
                DungeonRoomOne.linkRoom("south", DungeonRoomTwo)
                //room two
                DungeonRoomTwo.linkRoom("north", DungeonRoomOne)
@@ -1026,16 +1022,16 @@ function buildDungeon(){
                DungeonRoomEight.linkRoom("north", DungeonRoomSeven)
                DungeonRoomEight.linkRoom("south", SecretRoom)
                //secret room
-               SecretRoom.linkRoom("south", dungeonExit)
+               SecretRoom.linkRoom("south", caveExit)
                SecretRoom.linkRoom("north", DungeonRoomEight)
                break;
                
           case 6:
                //link rooms
-               dungeonExit._linkedRooms = []
-               dungeonExit.linkRoom("south", DungeonRoomOne)
+               caveExit._linkedRooms = []
+               caveExit.linkRoom("south", DungeonRoomOne)
                //room one
-               DungeonRoomOne.linkRoom("north", dungeonExit)
+               DungeonRoomOne.linkRoom("north", caveExit)
                DungeonRoomOne.linkRoom("west", DungeonRoomTwo)
                //room two
                DungeonRoomTwo.linkRoom("south", DungeonRoomThree)
@@ -1060,20 +1056,36 @@ function buildDungeon(){
                DungeonRoomEight.linkRoom("south", SecretRoom)
 
                SecretRoom.linkRoom("north", DungeonRoomEight)
-               SecretRoom/linkroom("south", dungeonExit)
+               SecretRoom/linkroom("south", caveExit)
                break;
           }
 
      //spawn Enemies
      function populateEnemies(room){
           enemies = Math.floor(Math.random()*3)
-          if(currentPlayer.level < 2)
+          if(currentPlayer.level < 3)
           {
                if(enemies == 0){
                     room._enemiesInRoom.push(Goblin = new Enemy("goblin",(6*currentPlayer.level), 3))
                     room._combat = true
                }
                else if(enemies == 1 || enemies == 2){
+                    room._enemiesInRoom.push(slime = new Enemy("slime",(3*currentPlayer.level), 1))
+                    room._combat = true
+               }
+               else{
+                    room._enemiesInRoom = []
+                    room._combat = false
+               }
+          }
+
+          else if(currentPlayer.level > 2 || currentPlayer.level < 5)
+          {
+               if(enemies == 0 || enemies == 1){
+                    room._enemiesInRoom.push(Goblin = new Enemy("goblin",(6*currentPlayer.level), 3))
+                    room._combat = true
+               }
+               else if(enemies == 2){
                     room._enemiesInRoom.push(slime = new Enemy("slime",(3*currentPlayer.level), 1))
                     room._combat = true
                }
@@ -1316,7 +1328,7 @@ function changeRoomInfo(){
           document.getElementById("TextOutput").innerText = currentRoom._name + "\n" + currentRoom._description + "\nEnemy: " + showEnemy()+ "\nItem: " + showItems() + "\nopenings:\n" + showdirections()
           document.getElementById("ImgOfRoom").src = currentRoom._Img    
      }
-     else if(currentRoom._name == "dungeonExit"){
+     else if(currentRoom._name == "CaveExit"){
           document.getElementById("TextOutput").innerText = currentRoom._name + "\n" + currentRoom._description + "\nopenings: " + showdirections()
           document.getElementById("ImgOfRoom").src = currentRoom._Img
      }
