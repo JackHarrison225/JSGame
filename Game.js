@@ -55,7 +55,7 @@ class Room {
           } 
           else {
                setImg("img/NotThatWay.png")
-               setTimeout(() => {}, 3000);
+               setTimeout(() => {setImg(currentRoom._Img)}, 3000);
                
                return this;
           }
@@ -157,9 +157,10 @@ class Enemy extends Entety{
      attack(){
           let hit = (Math.random()*20)
           if(hit > currentPlayer._armourClass-1){
+               if(this._EntetyName == "goblin"){setImg("img/GoblinDealdamage.png")}
+               else if(this._EntetyName == "slime"){setImg("img/SlimeDealdamage.png")}
                currentPlayer.takeDamage(this._damage)
-               setImg("img/TakeDamage.png")
-               setTimeout(() => {}, 3000);
+               setTimeout(() => {setImg(currentRoom._Img)}, 3000);
           }
      }
 
@@ -170,8 +171,9 @@ class Enemy extends Entety{
           currentPlayer.levelUp();
           currentRoom._enemiesInRoom = [];
           changeRoomInfo()
-          setImg("img/EnemyDead.png")
-          setTimeout(() => {}, 3000);
+          if(this._EntetyName == "goblin"){setImg("img/GoblinDead.png")}
+          else if(this._EntetyName == "slime"){setImg("img/SlimeDead.png")}
+          setTimeout(() => {setImg(currentRoom._Img)}, 3000);
      }
 
      takeDamage(damageToTake){
@@ -217,8 +219,7 @@ class Player extends Entety{
           gameOver()
      }
      takeDamage(damageToTake){
-          setImg("img/TakeDamge.png")
-          setTimeout(() => {}, 3000);
+          
           this._hitPoints -= damageToTake
           if (this._hitPoints < 1)
           {
@@ -226,15 +227,16 @@ class Player extends Entety{
           }
           document.getElementById("HitPoints").innerText = "HitPoints: " + currentPlayer._hitPoints + "/" + currentPlayer._maxHitPoints;
 
- 
+          setTimeout(() => {setImg(currentRoom._Img)}, 3000);
      }
      
      rollToHit(enemy){
           let hitVal = Math.floor(Math.random()*20)
           if(hitVal > enemy._armourClass-1)
           {
-               setImg("img/HitEnemy.png")
-               setTimeout(() => {}, 3000);
+               
+               if(currentRoom._enemiesInRoom._EntetyName == "goblin"){setImg("img/GoblinHit.png")}
+               else if(currentRoom._enemiesInRoom._EntetyName == "slime"){setImg("img/SlimeHit.png")}
                let damageGiven = this._equipt.WeaponEquipt._damage
                if(this._equipt.WeaponEquipt.damgeType == "magic")
                {
@@ -255,8 +257,9 @@ class Player extends Entety{
                }
                enemy.takeDamage(damageGiven)
           }
-          else{setImg("img/MissEnemy.png")
-          return  setTimeout(() => {}, 3000);}
+          else{if(currentRoom._enemiesInRoom._EntetyName == "goblin"){setImg("img/MissGoblin.png")}
+               else if(currentRoom._enemiesInRoom._EntetyName == "slime"){setImg("img/MissSlime.png")}
+               return  setTimeout(() => {setImg(currentRoom._Img)}, 3000);}
 
      }
 
@@ -279,7 +282,7 @@ class Player extends Entety{
                }
                setUpScreen()
                setImg("img/LevelUp.png");
-               setTimeout(() => {;}, 3000)
+               setTimeout(() => {setImg(currentRoom._Img)}, 3000);
                
           }
      }
@@ -298,7 +301,7 @@ class Player extends Entety{
                               }
                               setUpScreen()
                               setImg("img/PotionDrank.png")
-                              return  setTimeout(() => {console.log("mana")}, 3000);
+                              return  setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
                          }
                          
                     }
@@ -312,7 +315,7 @@ class Player extends Entety{
                               }
                               setUpScreen()
                               setImg("img/PotionDrank.png")
-                              return  setTimeout(() => {}, 3000);
+                              return  setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
                          }   
                     }
                     else if((this._inventory._Potions[i]._ItemName == "healing Pot +2") && this._inventory._Potions[i+1].total > 0){
@@ -326,12 +329,12 @@ class Player extends Entety{
                               setUpScreen()
                               setImg("img/PotionDrank.png")
                               return setTimeout(() => {console.log("mana")}, 3000);
-                         }else {setTimeout(() => {}, 3000);
+                         }else {setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
                               return  setImg("img/FullHP.png")}
                          
                     }
                     else {setImg("img/EmptyPotion.png")
-                    return  setTimeout(() => {}, 3000);}
+                    return  setTimeout(() => {setImg(currentRoom._Img)}, 3000);;}
                }
                
           }    
@@ -343,25 +346,25 @@ class Player extends Entety{
                          this._inventory._Potions[i+1].total -= 1
                          setUpScreen()
                          setImg("img/PotionDrank.png")
-                         return  setTimeout(() => {}, 3000);
+                         return  setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
                     }
                     else if((this._inventory._Potions[i]._ItemName == "mana Pot +1") && this._inventory._Potions[i+1].total > 0){
                          this._mana += 6
                          this._inventory._Potions[i+1].total -= 1
                          setUpScreen()
                          setImg("img/PotionDrank.png")
-                         return  setTimeout(() => {}, 3000);
+                         return  setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
                     }
                     else if((this._inventory._Potions[i]._ItemName == "mana Pot +2") && this._inventory._Potions[i+1].total > 0){
                          this._mana += 9
                          this._inventory._Potions[i+1].total -= 1
                          setUpScreen()
                          setImg("img/PotionDrank.png")
-                         return  setTimeout(() => {}, 3000);
+                         return  setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
                     }
                     
                }setImg("img/EmptyPotion.png") 
-               return setTimeout(() => {}, 3000);
+               return setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
                
           }
           setUpScreen()
@@ -381,7 +384,7 @@ class Player extends Entety{
                     setUpScreen()
                     changeRoomInfo()
                     setImg("img/NewPotion.png")
-                    setTimeout(() => {}, 3000);
+                    setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
                     return
                }
           }
@@ -392,7 +395,7 @@ class Player extends Entety{
                     setUpScreen()
                     changeRoomInfo()
                     setImg("img/NewArmour.png")
-                    setTimeout(() => {}, 3000);
+                    setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
                     return
                }
           }
@@ -403,7 +406,7 @@ class Player extends Entety{
                     setUpScreen()
                     changeRoomInfo()
                     setImg("img/NewWeapon.png")
-                    setTimeout(() => {}, 3000);
+                    setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
                     return
                }
           }
@@ -414,7 +417,7 @@ class Player extends Entety{
                setUpScreen()
                changeRoomInfo()
                setImg("img/NewPotion.png")
-               setTimeout(() => {}, 3000);
+               setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
                return
           }
           if (item._type == "Armour"){
@@ -424,7 +427,7 @@ class Player extends Entety{
                setUpScreen()
                changeRoomInfo()
                setImg("img/NewArmour.png")
-               setTimeout(() => {}, 3000);
+               setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
                return
           }
           if (item._type == "Weapon"){
@@ -434,7 +437,7 @@ class Player extends Entety{
                setUpScreen()
                changeRoomInfo()
                setImg("img/NewWeapon.png")
-               setTimeout(() => {}, 3000);
+               setTimeout(() => {setImg(currentRoom._Img)}, 3000);;
                return
           }
           
@@ -739,7 +742,7 @@ function gameStart(){
                               }
                          }
                          else {setImg("img/NoEnemy.png")
-                         return  setTimeout(() => {}, 3000);}
+                         return  setTimeout(() => {setImg(currentRoom._Img)}, 3000);;}
                     }
                     else if(heal.includes(command.toLowerCase())){
                          currentPlayer.takePotion("healing")
@@ -775,39 +778,39 @@ function buildDungeon(){
      //randomise the creation of the dungeon
      //create rooms
      DungeonRoomOne = new DungeonRoom("Room 1", "the large cavern opens up infront of you, A dull light makes it just visable to see")
-     populateEnemies(DungeonRoomOne, Goblin = new Enemy("goblin",(6*currentPlayer.level), 3))
+     populateEnemies(DungeonRoomOne)
      populateItems(DungeonRoomOne)
 
      DungeonRoomTwo = new DungeonRoom("Room 2", "Description")
-     populateEnemies(DungeonRoomTwo, Goblin = new Enemy("goblin",(6*currentPlayer.level), 3))
+     populateEnemies(DungeonRoomTwo)
      populateItems(DungeonRoomTwo)
 
      DungeonRoomThree = new DungeonRoom("Room 3", "Description")
-     populateEnemies(DungeonRoomThree, Goblin = new Enemy("goblin",(6*currentPlayer.level), 3))
+     populateEnemies(DungeonRoomThree)
      populateItems(DungeonRoomThree)
 
      DungeonRoomFour = new DungeonRoom("Room 4", "Description")
-     populateEnemies(DungeonRoomFour, Goblin = new Enemy("goblin",(6*currentPlayer.level), 3))
+     populateEnemies(DungeonRoomFour)
      populateItems(DungeonRoomFour)
 
      DungeonRoomFive = new DungeonRoom("Room 5", "Description")
-     populateEnemies(DungeonRoomFive, Goblin = new Enemy("goblin",(6*currentPlayer.level), 3))
+     populateEnemies(DungeonRoomFive)
      populateItems(DungeonRoomFive)
 
      DungeonRoomSix = new DungeonRoom("Room 6", "Description")
-     populateEnemies(DungeonRoomSix, Goblin = new Enemy("goblin",(6*currentPlayer.level), 3))
+     populateEnemies(DungeonRoomSix)
      populateItems(DungeonRoomSix)
 
      DungeonRoomSeven = new DungeonRoom("Room 7", "Description")
-     populateEnemies(DungeonRoomSeven, Goblin = new Enemy("goblin",(6*currentPlayer.level), 3))
+     populateEnemies(DungeonRoomSeven)
      populateItems(DungeonRoomSeven)
 
      DungeonRoomEight = new DungeonRoom("Room 8", "Description")
-     populateEnemies(DungeonRoomEight, Goblin = new Enemy("goblin",(6*currentPlayer.level), 3))
+     populateEnemies(DungeonRoomEight)
      populateItems(DungeonRoomEight)
 
      SecretRoom = new DungeonRoom("Secret room", "description")
-     populateEnemies(SecretRoom, Goblin = new Enemy("goblin",(6*currentPlayer.level), 3))
+     populateEnemies(SecretRoom)
      populateItems(SecretRoom)
 
      //cave layout
@@ -1062,12 +1065,22 @@ function buildDungeon(){
           }
 
      //spawn Enemies
-     function populateEnemies(room, enemy){
-          enemies = Math.floor(Math.random()*2)
-          
-          if(enemies == 0){
-               room._enemiesInRoom.push(enemy)
-               room._combat = true
+     function populateEnemies(room){
+          enemies = Math.floor(Math.random()*3)
+          if(currentPlayer.level < 2)
+          {
+               if(enemies == 0){
+                    room._enemiesInRoom.push(Goblin = new Enemy("goblin",(6*currentPlayer.level), 3))
+                    room._combat = true
+               }
+               else if(enemies == 1 || enemies == 2){
+                    room._enemiesInRoom.push(slime = new Enemy("slime",(3*currentPlayer.level), 1))
+                    room._combat = true
+               }
+               else{
+                    room._enemiesInRoom = []
+                    room._combat = false
+               }
           }
      }
 
