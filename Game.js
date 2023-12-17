@@ -203,11 +203,11 @@ class Player extends Entety{
           this._maxHitPoints = (this._basehitPoints * this.level) + this._stats.ConsMod
      }
      buyItem(itemName){
-          
+          this.setWeight()
      }
 
      sellItem(itemName){
-          
+          this.setWeight()
      }
 
      death(){
@@ -321,6 +321,7 @@ class Player extends Entety{
                               if(this._hitPoints > this._maxHitPoints){
                                   this._hitPoints = this._maxHitPoints
                               }
+                              this.setWeight()
                               setUpScreen()
                               setImg("img/PotionDrank.png")
                               
@@ -335,6 +336,7 @@ class Player extends Entety{
                               if(this._hitPoints > this._maxHitPoints){
                                   this._hitPoints = this._maxHitPoints
                               }
+                              this.setWeight()
                               setUpScreen()
                               setImg("img/PotionDrank.png")
                               
@@ -348,6 +350,7 @@ class Player extends Entety{
                               if(this._hitPoints > this._maxHitPoints){
                                   this._hitPoints = this._maxHitPoints
                               }
+                              this.setWeight() 
                               setUpScreen()
                               setImg("img/PotionDrank.png")
                               ;
@@ -367,18 +370,21 @@ class Player extends Entety{
                     if((this._inventory._Potions[i]._ItemName == "manaPot") && this._inventory._Potions[i+1].total > 0){
                          this._mana += 3
                          this._inventory._Potions[i+1].total -= 1
+                         this.setWeight()
                          setUpScreen()
                          return setImg("img/PotionDrank.png");
                     }
                     else if((this._inventory._Potions[i]._ItemName == "manaPot+1") && this._inventory._Potions[i+1].total > 0){
                          this._mana += 6
                          this._inventory._Potions[i+1].total -= 1
+                         this.setWeight()
                          setUpScreen()
                          return setImg("img/PotionDrank.png");
                     }
                     else if((this._inventory._Potions[i]._ItemName == "manaPot+2") && this._inventory._Potions[i+1].total > 0){
                          this._mana += 9
                          this._inventory._Potions[i+1].total -= 1
+                         this.setWeight()
                          setUpScreen()
                          return setImg("img/PotionDrank.png");
                     }
@@ -388,6 +394,7 @@ class Player extends Entety{
                return 
                
           }
+          this.setWeight()
           setUpScreen()
           
      }
@@ -398,56 +405,83 @@ class Player extends Entety{
           let pathA = this._inventory._Armours
           let pathW = this._inventory._Weapons
 
-          for(let i = 0; i < (pathP).length; i+=2){
-               if(pathP[i]._ItemName == item._ItemName){
-                    pathP[i+1].total += 1;
-                    setUpScreen()
+               if(this._currentWeight + item._weight < this._maxWeight+1){
+                    for(let i = 0; i < (pathP).length; i+=2){
+                    if(pathP[i]._ItemName == item._ItemName){
+                         pathP[i+1].total += 1;
+                         this.setWeight()
+                         changeRoomInfo()
+                         setUpScreen()
+                         return setImg("img/NewPotion.png")
+                    }
+               }
+               for(let i = 0; i < (pathA).length; i+=2){
+                    if(pathA[i]._ItemName == item._ItemName){
+                         pathA[i+1].total += 1 
+                         this.setWeight()
+                         changeRoomInfo()
+                         setUpScreen()
+                         return setImg("img/NewArmour.png")
+                    }
+               }
+               for(let i = 0; i < (pathW).length; i+=2){
+                    if(pathW[i]._ItemName == item._ItemName){
+                         pathW[i+1].total += 1
+                         this.setWeight()
+                         changeRoomInfo()
+                         setUpScreen()
+                         return setImg("img/NewWeapon.png")
+                    }
+               }
+               if (item._type == "Potion"){
+                    pathP.push(item)
+                    pathP.push({total : 1})
+                    this.setWeight()
                     changeRoomInfo()
+                    setUpScreen()
                     return setImg("img/NewPotion.png")
                }
-          }
-          for(let i = 0; i < (pathA).length; i+=2){
-               if(pathA[i]._ItemName == item._ItemName){
-                    pathA[i+1].total += 1 
-                    setUpScreen()
+               if (item._type == "Armour"){
+                    pathA.push(item)
+                    pathA.push({total : 1})
+                    this.setWeight()
                     changeRoomInfo()
+                    setUpScreen()
                     return setImg("img/NewArmour.png")
                }
-          }
-          for(let i = 0; i < (pathW).length; i+=2){
-               if(pathW[i]._ItemName == item._ItemName){
-                    pathW[i+1].total += 1
-                    setUpScreen()
+               if (item._type == "Weapon"){
+                    pathW.push(item) 
+                    pathW.push({total : 1})
+                    this.setWeight()
                     changeRoomInfo()
+                    setUpScreen()
                     return setImg("img/NewWeapon.png")
-               }
+               } 
           }
-          if (item._type == "Potion"){
-               pathP.push(item)
-               pathP.push({total : 1})
-               setUpScreen()
-               changeRoomInfo()
-               return setImg("img/NewPotion.png")
-          }
-          if (item._type == "Armour"){
-               pathA.push(item)
-               pathA.push({total : 1})
-               setUpScreen()
-               changeRoomInfo()
-               return setImg("img/NewArmour.png")
-          }
-          if (item._type == "Weapon"){
-               pathW.push(item) 
-               pathW.push({total : 1})
-               setUpScreen()
-               changeRoomInfo()
-               return setImg("img/NewWeapon.png")
-          } 
+          else(alert("Too much weight"))
           
      }
 
      setWeight(){
-
+          let total = 0
+          for(let i = 0; i < this._inventory._Potions.length; i+=2){
+               console.log(this._inventory._Potions[i] + " " + this._inventory._Potions[i]._weight)
+               console.log(total)
+               total += (this._inventory._Potions[i]._weight * this._inventory._Potions[i+1].total)
+          }
+          for(let i = 0; i < this._inventory._Armours.length; i+=2){
+               console.log(this._inventory._Armours[i] + " " + this._inventory._Armours[i]._weight)
+               console.log(total)
+               total += (this._inventory._Armours[i]._weight * this._inventory._Armours[i+1].total)
+          }
+          for(let i = 0; i < this._inventory._Weapons.length; i+=2){
+               console.log(this._inventory._Weapons[i] + " " + this._inventory._Weapons[i]._weight)
+               console.log(total)
+               total += (this._inventory._Weapons[i]._weight * this._inventory._Weapons[i+1].total)
+          }
+          total += this._equipt.WeaponEquipt._weight
+          total += this._equipt.ArmourEquipt._weight
+          return this._currentWeight = total
      }
      
      dropItem(itemname){
@@ -461,7 +495,7 @@ class Player extends Entety{
                     this._inventory._Weapons[i+1].total -= 1
                     item = this._inventory._Weapons[i]
                     currentRoom._itemsInRoom.push(item)
-                    setUpScreen()
+                    his.setWeight()
                     return changeRoomInfo()
                }
           }
@@ -472,6 +506,7 @@ class Player extends Entety{
                     this._inventory._Armours[i+1].total -= 1
                     item = this._inventory._Armours[i]
                     currentRoom._itemsInRoom.push(item)
+                    his.setWeight()
                     setUpScreen()
                     return changeRoomInfo()
                }
@@ -483,6 +518,7 @@ class Player extends Entety{
                     this._inventory._Potions[i+1].total -= 1
                     item = this._inventory._Potions[i]
                     currentRoom._itemsInRoom.push(item)
+                    his.setWeight()
                     setUpScreen()
                     return changeRoomInfo()
                }
@@ -629,6 +665,7 @@ function setWiz(){
           15)
      currentPlayer._armour = currentPlayer._equipt.ArmourEquipt._defense
      currentPlayer.setArmourClass()
+     currentPlayer.setWeight()
      
      showGame()
      gameStart()
@@ -654,6 +691,7 @@ function setBar(){
           15)
      currentPlayer._armour = currentPlayer._equipt.ArmourEquipt._defense
      currentPlayer.setArmourClass()
+     currentPlayer.setWeight()
 
      showGame()
      gameStart()
@@ -679,6 +717,7 @@ function setCle(){
           15)
      currentPlayer._armour = currentPlayer._equipt.ArmourEquipt._defense
      currentPlayer.setArmourClass()
+     currentPlayer.setWeight()
      
      showGame()
      gameStart()
@@ -704,6 +743,7 @@ function setRog(){
           15)
      currentPlayer._armour = currentPlayer._equipt.ArmourEquipt._defense
      currentPlayer.setArmourClass()
+     currentPlayer.setWeight()
 
      showGame()
      gameStart()
@@ -1389,6 +1429,7 @@ function setUpScreen(){
      document.getElementById("Name").innerText = currentPlayer._EntetyName;
      document.getElementById("Level").innerText = "Level: " + currentPlayer.level;
      document.getElementById("HitPoints").innerText = "HitPoints: " + currentPlayer._hitPoints + "/" + currentPlayer._maxHitPoints;
+     document.getElementById("Weight").innerText = "Weight: " + currentPlayer._currentWeight + "/" + currentPlayer._maxWeight;
      document.getElementById("Mana").innerText = "Mana: " + currentPlayer._mana;
      document.getElementById("Gold").innerText = "Gold: " + currentPlayer._gold;
      document.getElementById("StrMod").innerText = "Strength: " + currentPlayer._stats.StrMod;
@@ -1448,22 +1489,16 @@ function changeRoomInfo(){
 
 function showEnemy(){
      let text = []
-     if(currentRoom._enemiesInRoom != []){
-          for(i in currentRoom._enemiesInRoom){
-               text.push(currentRoom._enemiesInRoom[i]._EntetyName)
-          }
-     }
-     else text = ["None"]
+     for(i in currentRoom._enemiesInRoom){
+          text.push(currentRoom._enemiesInRoom[i]._EntetyName)
+     }   
      return text
 }
 function showItems(){
      let text = []
-     if(currentRoom._itemsInRoom != []){
-          for(i in currentRoom._itemsInRoom){
-               text.push(currentRoom._itemsInRoom[i]._ItemName)
-          }
+     for(i in currentRoom._itemsInRoom){
+          text.push(currentRoom._itemsInRoom[i]._ItemName)
      }
-     else text = ["None"]
      return text
 }
 function showdirections(){
