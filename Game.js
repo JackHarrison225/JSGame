@@ -495,7 +495,7 @@ class Player extends Entety{
                     this._inventory._Weapons[i+1].total -= 1
                     item = this._inventory._Weapons[i]
                     currentRoom._itemsInRoom.push(item)
-                    his.setWeight()
+                    this.setWeight()
                     return changeRoomInfo()
                }
           }
@@ -506,7 +506,7 @@ class Player extends Entety{
                     this._inventory._Armours[i+1].total -= 1
                     item = this._inventory._Armours[i]
                     currentRoom._itemsInRoom.push(item)
-                    his.setWeight()
+                    this.setWeight()
                     setUpScreen()
                     return changeRoomInfo()
                }
@@ -518,7 +518,7 @@ class Player extends Entety{
                     this._inventory._Potions[i+1].total -= 1
                     item = this._inventory._Potions[i]
                     currentRoom._itemsInRoom.push(item)
-                    his.setWeight()
+                    this.setWeight()
                     setUpScreen()
                     return changeRoomInfo()
                }
