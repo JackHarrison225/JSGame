@@ -136,8 +136,9 @@ class Entety{
 }
 
 class NPC{
-     constructor(inventory){
+     constructor(inventory, dialogArray){
           this._inventory = inventory
+          this._dialogArray = dialogArray
           this._hitPoints = 4
           this._speach = []
      }
@@ -528,10 +529,10 @@ class Player extends Entety{
 
 //create items
 //weapons (name, weight, attack, type, cost) //basic
-const BasicWand = new Weapon("BasicWand",5 ,4 ,"magic", 15);
-const BasicClub = new Weapon("BasicClub",9 ,5 , "blunt", 15);
-const BasicAxe = new Weapon("BasicAxe",4 ,5 , "finness", 15);
-const BasicDagger = new Weapon("BasicDagger",3 ,4 , "finness", 15);
+const BasicWand = new Weapon("BasicWand", 5, 4,"magic", 15);
+const BasicClub = new Weapon("BasicClub", 9, 5, "blunt", 15);
+const BasicAxe = new Weapon("BasicAxe", 4, 5, "finness", 15);
+const BasicDagger = new Weapon("BasicDagger", 3, 4, "finness", 15);
 // BasicWand, BasicClub, BasicAxe, BasicDagger
 //basic+1
 const BasicWandPlus1 = new Weapon("BasicWand+1", 5, 5, "magic", 20);
@@ -588,20 +589,24 @@ const manaPotPlus2 = new Potion("manaPot+2", 1, "lerge bottle containing funky s
 //create NPC
 Alchemist = new NPC({_Potions : [{healingPot : 3}, {manaPot : 1}],
      _Armours : [NoArmour, NormalLeather],
-     _Weapons : [NormalDagger]})
+     _Weapons : [NormalDagger]},
+     ["... He-hello I'm th-the alchemist ermmm ... this is my shop T-the Bubble Emporium. We make the potions that you bubble all up. errr please look around.",
+     "Yeah I can sell you that for",
+     "I-I'm sorry you ermmm dont seem to have enough. Plea-please forgive me I cant sell you that potion."])
 
 Blacksmith = new NPC({_Potions : [{healingPot : 3}, {manaPot : 1}],
      _Armours : [NoArmour, NormalPlate],
-     _Weapons : [NormalClub]})
+     _Weapons : [NormalClub]},
+     ["*ting* *ting* *ting* Oh a customer. I didnt see you there I'll be with you in just a moment. Look at the stock, all hand crafted by myself of course. I'll just put this peice to rest.",
+     "Well crafted item that one if I do say so myself that is. It'll cost you",
+     "Tell you what I'll do. I'll put this peice aside for you and you can come get it when you have enough."])
 
 Adventurer = new NPC({_Potions : [{healingPot : 3}, {manaPot : 1}],
      _Armours : [NoArmour, NormalPlate],
-     _Weapons : [NormalClub]})
-
-//create enemies
-
-
-//create rooms
+     _Weapons : [NormalClub]},
+     ["Hello fellow adventurer! welcome to my shop The Weopons Inn. we call it that because we always have weapons in. Look around, look around paruse my wares.",
+     "Fine peice that, a mighty fine peice. It'll cost a pretty penny.",
+     "You dont have enough gold come back after you earnt your keep."])
 
 //lists for rooms
 potionList = [healingPot, healingPotPlus1, healingPotPlus2, manaPot, manaPotPlus1, manaPotPlus2]
